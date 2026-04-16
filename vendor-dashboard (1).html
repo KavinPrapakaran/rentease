@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vendor Dashboard – Smart Rental Marketplace</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--primary:#FF4D00;--pd:#cc3d00;--secondary:#0A0A0A;--bg:#F5F3EF;--bg2:#EDEBE5;--white:#fff;--text:#1a1a1a;--muted:#666;--sw:225px;--r:16px;--green:#22c55e}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+    h1,h2,h3,h4,h5{font-family:'Syne',sans-serif}
+    .sidebar{width:var(--sw);background:var(--secondary);min-height:100vh;padding:24px 0;position:fixed;left:0;top:0;bottom:0;display:flex;flex-direction:column;z-index:100;overflow-y:auto}
+    .sb-logo{padding:0 20px 22px;border-bottom:1px solid rgba(255,255,255,.07);margin-bottom:4px}
+    .logo{display:flex;align-items:center;gap:9px;text-decoration:none}
+    .li{width:34px;height:34px;background:var(--primary);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;color:#fff;flex-shrink:0}
+    .lt{font-family:'Syne',sans-serif;font-size:.95rem;font-weight:800;color:#fff;line-height:1.25}
+    .lt em{color:var(--primary);font-style:normal}
+    .sb-menu{padding:12px 0;flex:1}
+    .mlbl{padding:10px 20px 5px;font-size:.62rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.22)}
+    .mi{display:flex;align-items:center;gap:10px;padding:10px 20px;color:rgba(255,255,255,.52);text-decoration:none;font-size:.84rem;font-weight:500;transition:all .2s;cursor:pointer;border-left:3px solid transparent;border:none;background:none;width:100%;text-align:left}
+    .mi:hover,.mi.active{color:#fff;background:rgba(255,255,255,.07);border-left:3px solid var(--primary)}
+    .mi i{width:16px;text-align:center;font-size:.85rem;flex-shrink:0}
+    .mi .mbg{margin-left:auto;background:var(--primary);color:#fff;font-size:.62rem;font-weight:700;padding:2px 7px;border-radius:50px}
+    .sb-bot{padding:14px 20px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:10px}
+    .uav{width:34px;height:34px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:.88rem;flex-shrink:0}
+    .ui strong{display:block;color:#fff;font-size:.82rem;font-weight:700}
+    .ui span{color:rgba(255,255,255,.38);font-size:.7rem}
+    .main{margin-left:var(--sw);flex:1;padding:28px 32px;min-height:100vh}
+    .view{display:none}.view.active{display:block}
+    .topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:26px;flex-wrap:wrap;gap:12px}
+    .topbar h2{font-size:1.5rem;font-weight:800;letter-spacing:-.5px}
+    .topbar p{color:var(--muted);font-size:.84rem;margin-top:2px}
+    .btn-add{background:var(--primary);color:#fff;border:none;padding:11px 20px;border-radius:10px;font-size:.86rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;display:flex;align-items:center;gap:7px;transition:all .2s}
+    .btn-add:hover{background:var(--pd);transform:translateY(-1px)}
+    .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:24px}
+    .sc{background:var(--white);border-radius:var(--r);padding:20px;box-shadow:0 2px 14px rgba(0,0,0,.06)}
+    .sic{width:42px;height:42px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.05rem;margin-bottom:11px}
+    .sc1 .sic{background:rgba(34,197,94,.12);color:var(--green)}
+    .sc2 .sic{background:rgba(59,130,246,.12);color:#3b82f6}
+    .sc3 .sic{background:rgba(255,77,0,.12);color:var(--primary)}
+    .sc4 .sic{background:rgba(251,191,36,.12);color:#fbbf24}
+    .sv{font-family:'Syne',sans-serif;font-size:1.6rem;font-weight:800;line-height:1;margin-bottom:3px}
+    .sl{font-size:.75rem;color:var(--muted)}
+    .sd{font-size:.72rem;margin-top:5px;color:var(--green)}
+    .crd{background:var(--white);border-radius:var(--r);box-shadow:0 2px 14px rgba(0,0,0,.06);overflow:hidden}
+    .ch{padding:16px 20px;border-bottom:1px solid var(--bg2);display:flex;align-items:center;justify-content:space-between}
+    .ch h4{font-size:.95rem;font-weight:700}
+    .lbtn{font-size:.78rem;color:var(--primary);font-weight:600;background:none;border:none;cursor:pointer;font-family:'DM Sans',sans-serif}
+    table{width:100%;border-collapse:collapse}
+    th{padding:9px 14px;text-align:left;font-size:.7rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;background:var(--bg)}
+    td{padding:11px 14px;font-size:.85rem;border-bottom:1px solid var(--bg2)}
+    tr:last-child td{border-bottom:none}
+    tr:hover td{background:var(--bg)}
+    .pill{display:inline-block;padding:3px 9px;border-radius:50px;font-size:.68rem;font-weight:700;text-transform:uppercase}
+    .pill.confirmed{background:rgba(34,197,94,.12);color:#16a34a}
+    .pill.pending{background:rgba(251,191,36,.15);color:#d97706}
+    .pill.completed{background:rgba(107,114,128,.12);color:#6b7280}
+    .dli{display:flex;align-items:center;gap:11px;padding:11px 18px;border-bottom:1px solid var(--bg2);transition:background .2s}
+    .dli:last-child{border-bottom:none}
+    .dli:hover{background:var(--bg)}
+    .dlt{width:48px;height:48px;border-radius:9px;overflow:hidden;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:1.2rem;flex-shrink:0}
+    .dlt img{width:100%;height:100%;object-fit:cover;display:block}
+    .dli-info{flex:1;min-width:0}
+    .dli-info strong{display:block;font-size:.86rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;margin-bottom:2px}
+    .dli-info span{font-size:.73rem;color:var(--muted)}
+    .dlp{font-family:'Syne',sans-serif;font-size:.93rem;font-weight:800;color:var(--primary);white-space:nowrap}
+    .dia{display:flex;gap:4px;flex-shrink:0}
+    .bico{background:var(--bg);border:none;width:28px;height:28px;border-radius:7px;cursor:pointer;font-size:.75rem;color:var(--muted);display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .bico:hover{background:var(--primary);color:#fff}
+    .adot{width:7px;height:7px;border-radius:50%;background:var(--green);display:inline-block;margin-right:4px;vertical-align:middle}
+    .adot.off{background:#f59e0b}
+    .mlg{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px}
+    .mlc{background:var(--white);border-radius:var(--r);overflow:hidden;box-shadow:0 2px 14px rgba(0,0,0,.07);transition:all .3s}
+    .mlc:hover{transform:translateY(-4px);box-shadow:0 14px 40px rgba(0,0,0,.12)}
+    .mlw{position:relative;height:200px;background:var(--bg2);overflow:hidden}
+    .mlw img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .4s}
+    .mlc:hover .mlw img{transform:scale(1.04)}
+    .mlph{width:100%;height:100%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--muted)}
+    .mlph i{font-size:2.5rem;opacity:.3}
+    .mlph span{font-size:.8rem;opacity:.5}
+    .mlsb{position:absolute;top:10px;left:10px;padding:4px 10px;border-radius:50px;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.5px}
+    .mlsb.avail{background:var(--green);color:#fff}
+    .mlsb.pend{background:#f59e0b;color:#fff}
+    .mlcnt{position:absolute;bottom:10px;right:10px;background:rgba(0,0,0,.6);color:#fff;font-size:.7rem;font-weight:600;padding:3px 8px;border-radius:50px;display:flex;align-items:center;gap:4px}
+    .mlthumbs{display:flex;gap:5px;padding:8px 12px;background:var(--bg);border-bottom:1px solid var(--bg2);overflow-x:auto}
+    .mlthumbs::-webkit-scrollbar{height:3px}
+    .mlthumbs::-webkit-scrollbar-thumb{background:var(--bg2);border-radius:2px}
+    .mlth{width:42px;height:42px;border-radius:7px;overflow:hidden;flex-shrink:0;border:2px solid transparent;cursor:pointer;transition:border-color .2s}
+    .mlth:hover,.mlth.active{border-color:var(--primary)}
+    .mlth img{width:100%;height:100%;object-fit:cover;display:block}
+    .mlb{padding:14px 16px}
+    .mlcat{display:inline-flex;align-items:center;gap:5px;background:rgba(255,77,0,.09);color:var(--primary);font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:50px;margin-bottom:7px}
+    .mlb h4{font-size:.98rem;font-weight:800;letter-spacing:-.3px;margin-bottom:5px;line-height:1.3}
+    .mlloc{display:flex;align-items:center;gap:4px;color:var(--muted);font-size:.78rem;margin-bottom:7px}
+    .mlloc i{color:var(--primary);font-size:.72rem}
+    .mldesc{font-size:.82rem;color:var(--muted);line-height:1.55;margin-bottom:11px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .mldr{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-bottom:12px}
+    .mldb{background:var(--bg);border-radius:8px;padding:8px 10px}
+    .mldb .ll{font-size:.66rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:2px}
+    .mldb .vv{font-size:.88rem;font-weight:700;color:var(--text)}
+    .mldb .vv.price{color:var(--primary);font-family:'Syne',sans-serif;font-size:1rem}
+    .mlf{display:flex;gap:7px;padding-top:11px;border-top:1px solid var(--bg2)}
+    .bedit{flex:1;background:var(--secondary);color:#fff;border:none;padding:9px;border-radius:9px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:6px}
+    .bedit:hover{background:var(--primary)}
+    .bdel{background:rgba(239,68,68,.1);color:#ef4444;border:none;padding:9px 12px;border-radius:9px;font-size:.82rem;cursor:pointer;transition:all .2s}
+    .bdel:hover{background:#ef4444;color:#fff}
+    .empty{text-align:center;padding:60px 20px;color:var(--muted)}
+    .empty i{font-size:3rem;opacity:.2;display:block;margin-bottom:14px}
+    .empty p{font-size:.9rem;margin-bottom:20px;line-height:1.6}
+    .mo{display:none;position:fixed;inset:0;background:rgba(0,0,0,.58);z-index:500;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(5px)}
+    .mo.open{display:flex}
+    .mbox{background:#fff;border-radius:22px;width:100%;max-width:600px;max-height:94vh;overflow-y:auto;animation:su .3s ease}
+    @keyframes su{from{opacity:0;transform:translateY(30px)}to{opacity:1;transform:translateY(0)}}
+    .mhd{padding:20px 24px;border-bottom:1px solid var(--bg2);display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;background:#fff;z-index:2}
+    .mhd h3{font-size:1.1rem;font-weight:800}
+    .xcb{background:var(--bg);border:none;width:32px;height:32px;border-radius:50%;cursor:pointer;color:var(--muted);display:flex;align-items:center;justify-content:center;transition:all .2s}
+    .xcb:hover{background:var(--primary);color:#fff}
+    .mbody{padding:22px 24px}
+    .fg{margin-bottom:15px}
+    .fg label{display:block;font-size:.72rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;margin-bottom:6px}
+    .rq{color:var(--primary)}
+    .fg input,.fg select,.fg textarea{width:100%;border:1.5px solid var(--bg2);border-radius:9px;padding:11px 13px;font-size:.9rem;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;transition:border-color .2s;background:var(--bg)}
+    .fg input:focus,.fg select:focus,.fg textarea:focus{border-color:var(--primary);background:#fff;box-shadow:0 0 0 3px rgba(255,77,0,.08)}
+    .fg textarea{min-height:80px;resize:vertical}
+    .r2{display:grid;grid-template-columns:1fr 1fr;gap:13px}
+    .uz{border:2.5px dashed #ddd;border-radius:12px;padding:26px 20px;text-align:center;cursor:pointer;background:var(--bg);transition:all .25s}
+    .uz:hover,.uz.dv{border-color:var(--primary);background:rgba(255,77,0,.03)}
+    .uzi{font-size:2.4rem;color:var(--muted);margin-bottom:10px;transition:color .2s;display:block}
+    .uz.dv .uzi,.uz:hover .uzi{color:var(--primary)}
+    .uz p{font-size:.88rem;color:var(--muted);margin-bottom:4px;font-weight:500}
+    .uz small{font-size:.74rem;color:#bbb}
+    #ifi{display:none}
+    .pg{display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-top:12px}
+    .pi{position:relative;border-radius:9px;overflow:hidden;aspect-ratio:1;background:var(--bg2);border:2px solid transparent;transition:border-color .2s;cursor:pointer}
+    .pi:hover{border-color:var(--primary)}
+    .pi.cov{border-color:var(--primary)}
+    .pi img{width:100%;height:100%;object-fit:cover;display:block}
+    .pi .rb{position:absolute;top:3px;right:3px;width:20px;height:20px;background:rgba(0,0,0,.65);color:#fff;border:none;border-radius:50%;cursor:pointer;font-size:.58rem;display:flex;align-items:center;justify-content:center;transition:background .2s;z-index:1}
+    .pi .rb:hover{background:#ef4444}
+    .pi .cl{position:absolute;bottom:3px;left:3px;background:var(--primary);color:#fff;font-size:.58rem;font-weight:700;padding:2px 6px;border-radius:4px}
+    .upinfo{font-size:.76rem;color:var(--muted);margin-top:8px;text-align:center}
+    .upinfo .uc{color:var(--primary);font-weight:700}
+    .upbar{height:3px;background:var(--bg2);border-radius:2px;margin-top:8px;overflow:hidden;display:none}
+    .upbar-fill{height:100%;background:var(--primary);border-radius:2px;transition:width .3s}
+    .bsave{width:100%;background:var(--primary);color:#fff;border:none;padding:14px;border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;margin-top:18px;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+    .bsave:hover{background:var(--pd)}
+    .bsave:disabled{background:#ccc;cursor:not-allowed}
+    .spanel{display:none;text-align:center;padding:32px 24px}
+    .spanel.show{display:block}
+    .spc{width:72px;height:72px;background:rgba(34,197,94,.12);border-radius:50%;margin:0 auto 16px;display:flex;align-items:center;justify-content:center;font-size:1.8rem;color:var(--green)}
+    .spanel h4{font-size:1.15rem;font-weight:800;margin-bottom:8px}
+    .spanel p{font-size:.85rem;color:var(--muted);line-height:1.6;margin-bottom:20px}
+    .bano{background:var(--primary);color:#fff;border:none;padding:11px 24px;border-radius:9px;font-size:.88rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;margin:0 5px}
+    .bano:hover{background:var(--pd)}
+    .det-ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:600;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(6px)}
+    .det-ov.open{display:flex}
+    .det-box{background:#fff;border-radius:22px;width:100%;max-width:680px;max-height:94vh;overflow-y:auto;animation:su .3s ease}
+    .det-mi{width:100%;height:280px;object-fit:cover;display:block;background:var(--bg2)}
+    .det-mph{width:100%;height:280px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:4rem;color:var(--muted);opacity:.3}
+    .det-ths{display:flex;gap:8px;padding:10px 18px;background:var(--bg);border-bottom:1px solid var(--bg2);overflow-x:auto}
+    .det-th{width:52px;height:52px;border-radius:8px;overflow:hidden;flex-shrink:0;border:2px solid transparent;cursor:pointer;transition:border-color .2s}
+    .det-th:hover,.det-th.active{border-color:var(--primary)}
+    .det-th img{width:100%;height:100%;object-fit:cover;display:block}
+    .det-con{padding:20px 22px}
+    .det-con h3{font-size:1.35rem;font-weight:800;letter-spacing:-.5px;margin-bottom:7px}
+    .det-meta{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:13px}
+    .det-meta span{font-size:.82rem;color:var(--muted);display:flex;align-items:center;gap:5px}
+    .det-meta span i{color:var(--primary);font-size:.74rem}
+    .det-desc{font-size:.9rem;color:var(--muted);line-height:1.65;margin-bottom:16px;padding:12px 14px;background:var(--bg);border-radius:10px}
+    .det-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:16px}
+    .dbox{background:var(--bg);border-radius:10px;padding:12px 13px}
+    .dbox .dl{font-size:.68rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.6px;margin-bottom:3px}
+    .dbox .dv{font-size:.95rem;font-weight:700;color:var(--text)}
+    .dbox .dv.big{color:var(--primary);font-family:'Syne',sans-serif;font-size:1.1rem}
+    .det-xcb{position:absolute;top:14px;right:14px;background:rgba(0,0,0,.5);color:#fff;border:none;width:34px;height:34px;border-radius:50%;cursor:pointer;font-size:.9rem;display:flex;align-items:center;justify-content:center;transition:background .2s}
+    .det-xcb:hover{background:var(--primary)}
+    .det-iw{position:relative}
+    .cw{padding:20px}
+    .cb{display:flex;align-items:flex-end;gap:8px;height:100px}
+    .cb-bar{flex:1;background:rgba(255,77,0,.15);border-radius:4px 4px 0 0;position:relative;cursor:pointer;transition:background .25s}
+    .cb-bar:hover{background:var(--primary)}
+    .cb-bar::after{content:attr(data-v);position:absolute;top:-16px;left:50%;transform:translateX(-50%);font-size:.6rem;color:var(--muted);white-space:nowrap}
+    .clbls{display:flex;gap:8px;padding-top:6px}
+    .clbls span{flex:1;text-align:center;font-size:.65rem;color:var(--muted)}
+    .toast{position:fixed;bottom:22px;right:22px;background:var(--secondary);color:#fff;padding:12px 18px;border-radius:11px;font-size:.85rem;display:flex;align-items:center;gap:8px;z-index:9999;transform:translateY(60px);opacity:0;transition:all .3s;box-shadow:0 8px 28px rgba(0,0,0,.22);max-width:320px}
+    .toast.show{transform:translateY(0);opacity:1}
+    .toast i{color:var(--primary);flex-shrink:0}
+    @media(max-width:900px){.stats{grid-template-columns:1fr 1fr}}
+    @media(max-width:600px){.stats{grid-template-columns:1fr 1fr}.mlg{grid-template-columns:1fr}.r2{grid-template-columns:1fr}.main{padding:18px 14px}}
+  </style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="sb-logo"><a href="index.html" class="logo"><div class="li"><i class="fas fa-bolt"></i></div><div class="lt">Smart Rental<br/><em>Marketplace</em></div></a></div>
+  <div class="sb-menu">
+    <div class="mlbl">Main</div>
+    <button class="mi active" onclick="showView('dash',this)"><i class="fas fa-th-large"></i> Dashboard</button>
+    <button class="mi" onclick="showView('mylist',this)"><i class="fas fa-list"></i> My Listings <span class="mbg" id="lbadge">0</span></button>
+    <button class="mi" onclick="showView('bkgs',this)"><i class="fas fa-calendar-check"></i> Bookings <span class="mbg">3</span></button>
+    <button class="mi" onclick="showView('earn',this)"><i class="fas fa-rupee-sign"></i> Earnings</button>
+    <div class="mlbl">Manage</div>
+    <button class="mi" onclick="openAdd();setAM(this)"><i class="fas fa-upload"></i> Add Listing</button>
+    <button class="mi" onclick="toast('Reviews coming soon')"><i class="fas fa-star"></i> Reviews</button>
+    <div class="mlbl">Account</div>
+    <button class="mi" onclick="toast('Settings coming soon')"><i class="fas fa-cog"></i> Settings</button>
+    <a href="index.html" class="mi"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+  <div class="sb-bot"><div class="uav">R</div><div class="ui"><strong>Raj Kumar</strong><span>Verified Vendor</span></div></div>
+</div>
+
+<div class="main">
+  <!-- DASHBOARD -->
+  <div class="view active" id="view-dash">
+    <div class="topbar">
+      <div><h2>Vendor Dashboard</h2><p>Welcome back, Raj!</p></div>
+      <button class="btn-add" onclick="openAdd()"><i class="fas fa-plus"></i> Add New Listing</button>
+    </div>
+    <div class="stats">
+      <div class="sc sc1"><div class="sic"><i class="fas fa-rupee-sign"></i></div><div class="sv">₹24,800</div><div class="sl">Earnings (Month)</div><div class="sd"><i class="fas fa-arrow-up"></i> +18%</div></div>
+      <div class="sc sc2"><div class="sic"><i class="fas fa-calendar-check"></i></div><div class="sv">38</div><div class="sl">Total Bookings</div><div class="sd"><i class="fas fa-arrow-up"></i> +7 this week</div></div>
+      <div class="sc sc3"><div class="sic"><i class="fas fa-boxes"></i></div><div class="sv" id="dcount">0</div><div class="sl">Active Listings</div><div class="sd" id="dnote" style="color:var(--muted)">No listings yet</div></div>
+      <div class="sc sc4"><div class="sic"><i class="fas fa-star"></i></div><div class="sv">4.8</div><div class="sl">Avg. Rating</div><div class="sd">128 reviews</div></div>
+    </div>
+    <div style="display:grid;grid-template-columns:2fr 1fr;gap:20px">
+      <div class="crd">
+        <div class="ch"><h4>Recent Bookings</h4><a href="#" class="lbtn">View all →</a></div>
+        <table><thead><tr><th>Customer</th><th>Product</th><th>Dates</th><th>Amount</th><th>Status</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Arjun K.</strong></td><td>Royal Enfield 350</td><td>Jun 10–12</td><td><strong>₹798</strong></td><td><span class="pill confirmed">Confirmed</span></td></tr>
+          <tr><td><strong>Meera S.</strong></td><td>Honda Activa 6G</td><td>Jun 13–14</td><td><strong>₹398</strong></td><td><span class="pill pending">Pending</span></td></tr>
+          <tr><td><strong>Vikram P.</strong></td><td>Canon EOS R5</td><td>Jun 8–10</td><td><strong>₹2,398</strong></td><td><span class="pill completed">Completed</span></td></tr>
+          <tr><td><strong>Riya M.</strong></td><td>Royal Enfield 350</td><td>Jun 15–17</td><td><strong>₹1,197</strong></td><td><span class="pill confirmed">Confirmed</span></td></tr>
+        </tbody></table>
+      </div>
+      <div class="crd"><div class="ch"><h4>My Listings</h4><button class="lbtn" onclick="openAdd()">+ Add new</button></div><div id="dpanel"><div style="padding:24px;text-align:center;color:var(--muted);font-size:.85rem"><i class="fas fa-boxes" style="font-size:1.8rem;opacity:.2;display:block;margin-bottom:10px"></i>No listings yet.</div></div></div>
+    </div>
+    <div class="crd" style="margin-top:20px">
+      <div class="ch"><h4>Earnings – Last 7 Days</h4><span style="font-size:.78rem;color:var(--muted)">Total: ₹24,800</span></div>
+      <div class="cw"><div class="cb"><div class="cb-bar" style="height:40%" data-v="₹2.1k"></div><div class="cb-bar" style="height:65%" data-v="₹3.4k"></div><div class="cb-bar" style="height:50%" data-v="₹2.6k"></div><div class="cb-bar" style="height:80%" data-v="₹4.2k"></div><div class="cb-bar" style="height:55%" data-v="₹2.9k"></div><div class="cb-bar" style="height:90%" data-v="₹4.7k"></div><div class="cb-bar" style="height:75%;background:var(--primary)" data-v="₹3.9k"></div></div><div class="clbls"><span>Mon</span><span>Tue</span><span>Wed</span><span>Thu</span><span>Fri</span><span>Sat</span><span>Sun</span></div></div>
+    </div>
+  </div>
+
+  <!-- MY LISTINGS -->
+  <div class="view" id="view-mylist">
+    <div class="topbar"><div><h2>My Listings</h2><p>All uploaded products with images and full details.</p></div><button class="btn-add" onclick="openAdd()"><i class="fas fa-plus"></i> Add New Listing</button></div>
+    <div class="mlg" id="mlgrid"><div class="empty"><i class="fas fa-boxes"></i><p>No listings yet.<br/>Click "Add New Listing" to upload your first product.</p><button class="btn-add" style="display:inline-flex;margin:0 auto" onclick="openAdd()"><i class="fas fa-plus"></i> Add Listing</button></div></div>
+  </div>
+
+  <!-- BOOKINGS -->
+  <div class="view" id="view-bkgs">
+    <div class="topbar"><div><h2>All Bookings</h2><p>Manage all your rental bookings.</p></div></div>
+    <div class="crd"><table><thead><tr><th>Booking ID</th><th>Customer</th><th>Product</th><th>Dates</th><th>Days</th><th>Amount</th><th>Status</th></tr></thead>
+    <tbody>
+      <tr><td><strong>SRMI-472801</strong></td><td>Arjun K.</td><td>Royal Enfield 350</td><td>Jun 10–12</td><td>3</td><td><strong>₹798</strong></td><td><span class="pill confirmed">Confirmed</span></td></tr>
+      <tr><td><strong>SRMI-472802</strong></td><td>Meera S.</td><td>Honda Activa 6G</td><td>Jun 13–14</td><td>2</td><td><strong>₹398</strong></td><td><span class="pill pending">Pending</span></td></tr>
+      <tr><td><strong>SRMI-472803</strong></td><td>Vikram P.</td><td>Canon EOS R5</td><td>Jun 8–10</td><td>3</td><td><strong>₹2,398</strong></td><td><span class="pill completed">Completed</span></td></tr>
+    </tbody></table></div>
+  </div>
+
+  <!-- EARNINGS -->
+  <div class="view" id="view-earn">
+    <div class="topbar"><div><h2>Earnings</h2><p>Revenue and payout history.</p></div></div>
+    <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:20px">
+      <div class="sc sc1"><div class="sic"><i class="fas fa-rupee-sign"></i></div><div class="sv">₹24,800</div><div class="sl">This Month</div><div class="sd">After 10% platform fee</div></div>
+      <div class="sc sc2"><div class="sic"><i class="fas fa-calendar"></i></div><div class="sv">₹1,12,400</div><div class="sl">Total Lifetime</div><div class="sd">Since joining</div></div>
+      <div class="sc sc4"><div class="sic"><i class="fas fa-wallet"></i></div><div class="sv">₹6,200</div><div class="sl">Pending Payout</div><div class="sd">Transfers in 2–3 days</div></div>
+    </div>
+    <div class="crd"><table><thead><tr><th>Date</th><th>Booking ID</th><th>Product</th><th>Gross</th><th>Platform Fee</th><th>Net Payout</th></tr></thead>
+    <tbody>
+      <tr><td>Jun 12</td><td>SRMI-472801</td><td>Royal Enfield 350</td><td>₹798</td><td>₹79.8</td><td><strong style="color:var(--green)">₹718.2</strong></td></tr>
+      <tr><td>Jun 10</td><td>SRMI-472803</td><td>Canon EOS R5</td><td>₹2,398</td><td>₹239.8</td><td><strong style="color:var(--green)">₹2,158.2</strong></td></tr>
+    </tbody></table></div>
+  </div>
+</div>
+
+<!-- ADD LISTING MODAL -->
+<div class="mo" id="addMo" onclick="co(event,'addMo')">
+  <div class="mbox">
+    <div class="mhd"><h3><i class="fas fa-upload" style="color:var(--primary);margin-right:7px"></i>Add New Listing</h3><button class="xcb" onclick="closeAdd()"><i class="fas fa-times"></i></button></div>
+    <div class="mbody" id="aform">
+      <div class="fg"><label>Category <span class="rq">*</span></label><select id="mcat"><option value="">-- Select Category --</option><option value="bike">🏍️ Bike</option><option value="car">🚗 Car</option><option value="laptop">💻 Laptop</option><option value="camera">📷 Camera</option></select></div>
+      <div class="fg"><label>Product Title <span class="rq">*</span></label><input type="text" id="mtitle" placeholder="e.g. Royal Enfield Classic 350 – 2022 Model"/></div>
+      <div class="r2"><div class="fg"><label>Price / Day (₹) <span class="rq">*</span></label><input type="number" id="mprice" placeholder="499" min="1"/></div><div class="fg"><label>Security Deposit (₹)</label><input type="number" id="mdeposit" placeholder="2000" min="0"/></div></div>
+      <div class="r2"><div class="fg"><label>City</label><input type="text" id="mcity" placeholder="Chennai"/></div><div class="fg"><label>Area</label><input type="text" id="marea" placeholder="Anna Nagar"/></div></div>
+      <div class="fg"><label>Description</label><textarea id="mdesc" placeholder="Year, condition, features, accessories, pickup rules…"></textarea></div>
+      <div class="fg">
+        <label>Product Images <span class="rq">*</span> <span style="color:var(--muted);font-weight:400;font-size:.7rem;text-transform:none;letter-spacing:0">(min 1 required)</span></label>
+        <div class="uz" id="uz" onclick="document.getElementById('ifi').click()" ondragover="dov(event)" ondragleave="dlv()" ondrop="drp(event)">
+          <span class="uzi"><i class="fas fa-cloud-upload-alt" id="uzi"></i></span>
+          <p id="uzt">Click to upload or drag &amp; drop photos here</p>
+          <small>JPG · PNG · WEBP · Max 5MB per image · Multiple allowed</small>
+          <input type="file" id="ifi" accept="image/jpeg,image/png,image/webp,image/gif" multiple/>
+        </div>
+        <div class="upbar" id="upbar"><div class="upbar-fill" id="upfill" style="width:0%"></div></div>
+        <div class="pg" id="pg"></div>
+        <div class="upinfo" id="upinfo" style="display:none"><span class="uc" id="ucount">0</span> image(s) · Click image to set as cover · First = default cover</div>
+      </div>
+      <button class="bsave" onclick="saveListing()"><i class="fas fa-check-circle"></i> Save &amp; Submit for Review</button>
+    </div>
+    <div class="spanel" id="sp">
+      <div class="spc"><i class="fas fa-check"></i></div>
+      <h4>Listing Submitted! 🎉</h4>
+      <p>Your product is submitted for admin review.<br/>It will go live within 24 hours.<br/>View it in <strong>My Listings</strong>.</p>
+      <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
+        <button class="bano" onclick="resetForm()">Add Another</button>
+        <button class="bano" style="background:var(--secondary)" onclick="closeAdd();showView('mylist',null)">View My Listings</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DETAIL MODAL -->
+<div class="det-ov" id="detMo" onclick="co(event,'detMo')">
+  <div class="det-box">
+    <div class="det-iw">
+      <img id="dmi" class="det-mi" src="" alt="" onerror="this.style.display='none';document.getElementById('dmph').style.display='flex'"/>
+      <div id="dmph" class="det-mph" style="display:none"><i class="fas fa-image"></i></div>
+      <button class="det-xcb" onclick="closeDet()"><i class="fas fa-times"></i></button>
+    </div>
+    <div class="det-ths" id="dths"></div>
+    <div class="det-con">
+      <h3 id="dtitle"></h3>
+      <div class="det-meta">
+        <span><i class="fas fa-tag"></i><span id="dcat"></span></span>
+        <span><i class="fas fa-map-marker-alt"></i><span id="dloc"></span></span>
+        <span><i class="fas fa-circle" style="font-size:.5rem" id="davicon"></i><span id="davtxt"></span></span>
+      </div>
+      <div class="det-desc" id="ddesc"></div>
+      <div class="det-grid">
+        <div class="dbox"><div class="dl">Price/Day</div><div class="dv big" id="dprice"></div></div>
+        <div class="dbox"><div class="dl">Deposit</div><div class="dv" id="ddep"></div></div>
+        <div class="dbox"><div class="dl">Status</div><div class="dv" id="dstat"></div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="toast" id="toastEl"><i class="fas fa-check-circle"></i><span id="tmsg"></span></div>
+
+<script>
+// ════ DATA ════════════════════════════════════════════════
+// THE FIX: images stored as BASE64 strings inside listing objects
+// base64 = permanent — never disappears, survives modal close, re-render, etc.
+let listings = [];
+let pending  = [];   // [{base64, name}] — images awaiting save
+
+// ════ NAVIGATION ═════════════════════════════════════════
+function showView(n,btn){
+  document.querySelectorAll('.view').forEach(v=>v.classList.remove('active'));
+  document.getElementById('view-'+n).classList.add('active');
+  if(btn) setAM(btn);
+}
+function setAM(btn){
+  document.querySelectorAll('.mi').forEach(m=>m.classList.remove('active'));
+  if(btn) btn.classList.add('active');
+}
+
+// ════ RENDER DASHBOARD SIDE PANEL ════════════════════════
+function renderDash(){
+  const p=document.getElementById('dpanel');
+  document.getElementById('dcount').textContent=listings.length;
+  document.getElementById('lbadge').textContent=listings.length;
+  document.getElementById('dnote').textContent=listings.length>0?'All submitted ✓':'No listings yet';
+  document.getElementById('dnote').style.color=listings.length>0?'var(--green)':'var(--muted)';
+  if(!listings.length){
+    p.innerHTML='<div style="padding:24px;text-align:center;color:var(--muted);font-size:.85rem"><i class="fas fa-boxes" style="font-size:1.8rem;opacity:.2;display:block;margin-bottom:10px"></i>No listings yet.</div>';
+    return;
+  }
+  p.innerHTML=listings.slice(0,5).map(l=>`
+    <div class="dli">
+      <div class="dlt">${l.imgs.length?`<img src="${l.imgs[0]}" alt="${escH(l.title)}" onerror="this.parentElement.innerHTML='${l.ico}'">`:`${l.ico}`}</div>
+      <div class="dli-info"><strong>${escH(l.title)}</strong><span><span class="adot${l.avail?'':' off'}"></span>${cap(l.cat)} · ${l.avail?'Available':'Booked'}</span></div>
+      <div class="dlp">₹${l.price}/day</div>
+      <div class="dia">
+        <button class="bico" onclick="openDet(${l.id})" title="View"><i class="fas fa-eye"></i></button>
+        <button class="bico" onclick="del(${l.id})" title="Delete"><i class="fas fa-trash"></i></button>
+      </div>
+    </div>`).join('');
+}
+
+// ════ RENDER MY LISTINGS GRID ═════════════════════════════
+// KEY: l.imgs[i] is a base64 string → always shows, never disappears
+function renderGrid(){
+  const g=document.getElementById('mlgrid');
+  if(!listings.length){
+    g.innerHTML=`<div class="empty"><i class="fas fa-boxes"></i><p>No listings yet.<br/>Click "Add New Listing" to upload your first product.</p><button class="btn-add" style="display:inline-flex;margin:0 auto" onclick="openAdd()"><i class="fas fa-plus"></i> Add Listing</button></div>`;
+    return;
+  }
+  g.innerHTML=listings.map(l=>{
+    const hasImg=l.imgs.length>0;
+    const mainImg=hasImg?`<img src="${l.imgs[0]}" alt="${escH(l.title)}" id="mi-${l.id}" onerror="this.style.display='none'">`:`<div class="mlph"><i class="fas fa-image"></i><span>No image</span></div>`;
+    const thumbs=l.imgs.length>1?l.imgs.map((s,i)=>`<div class="mlth ${i===0?'active':''}" onclick="swT(${l.id},${i},this)"><img src="${s}" alt=""/></div>`).join(''):'';
+    const loc=[l.area,l.city].filter(Boolean).join(', ');
+    return `<div class="mlc">
+      <div class="mlw">${mainImg}<div class="mlsb ${l.avail?'avail':'pend'}">${l.avail?'Available':'Pending'}</div>${hasImg?`<div class="mlcnt"><i class="fas fa-images"></i> ${l.imgs.length}</div>`:''}</div>
+      ${l.imgs.length>1?`<div class="mlthumbs">${thumbs}</div>`:''}
+      <div class="mlb">
+        <div class="mlcat"><i class="fas ${cico(l.cat)}"></i> ${cap(l.cat)}</div>
+        <h4>${escH(l.title)}</h4>
+        ${loc?`<div class="mlloc"><i class="fas fa-map-marker-alt"></i>${loc}</div>`:''}
+        ${l.desc?`<div class="mldesc">${escH(l.desc)}</div>`:''}
+        <div class="mldr">
+          <div class="mldb"><div class="ll">Price/Day</div><div class="vv price">₹${l.price}</div></div>
+          <div class="mldb"><div class="ll">Deposit</div><div class="vv">₹${l.deposit||0}</div></div>
+        </div>
+        <div class="mlf">
+          <button class="bedit" onclick="openDet(${l.id})"><i class="fas fa-eye"></i> View Details</button>
+          <button class="bdel" onclick="del(${l.id})" title="Delete"><i class="fas fa-trash"></i></button>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function swT(lid,idx,el){
+  const l=listings.find(x=>x.id===lid);
+  const img=document.getElementById('mi-'+lid);
+  if(l&&img&&l.imgs[idx]) img.src=l.imgs[idx];
+  const card=el.closest('.mlc');
+  if(card) card.querySelectorAll('.mlth').forEach((t,i)=>t.classList.toggle('active',i===idx));
+}
+
+// ════ IMAGE UPLOAD — THE REAL FIX ════════════════════════
+// FileReader.readAsDataURL() converts image files to base64 strings
+// base64 strings are plain text → they live inside the listing object
+// → they NEVER disappear after modal close, re-render, or page actions
+document.getElementById('ifi').addEventListener('change',function(){
+  readFiles(this.files);
+  this.value=''; // reset so same file can be selected again
+});
+
+function readFiles(files){
+  if(!files||!files.length) return;
+  const arr=Array.from(files);
+  const bar=document.getElementById('upbar');
+  const fill=document.getElementById('upfill');
+  bar.style.display='block';
+  let done=0;
+  arr.forEach(f=>{
+    if(f.size>5*1024*1024){toast(`"${f.name}" too large (max 5MB)`);done++;chk();return;}
+    if(!f.type.startsWith('image/')){toast(`"${f.name}" is not an image`);done++;chk();return;}
+    const r=new FileReader();
+    r.onload=e=>{
+      pending.push({base64:e.target.result,name:f.name});
+      done++;
+      fill.style.width=(done/arr.length*100)+'%';
+      chk();
+    };
+    r.onerror=()=>{done++;chk();};
+    r.readAsDataURL(f); // → base64 string, stored permanently
+  });
+  function chk(){
+    if(done===arr.length){
+      setTimeout(()=>{bar.style.display='none';fill.style.width='0%';},400);
+      renderPrev();
+    }
+  }
+}
+
+function renderPrev(){
+  const g=document.getElementById('pg');
+  const info=document.getElementById('upinfo');
+  g.innerHTML=pending.map((p,i)=>`
+    <div class="pi ${i===0?'cov':''}" onclick="setCov(${i})">
+      <img src="${p.base64}" alt="${escH(p.name)}"/>
+      ${i===0?'<div class="cl">Cover</div>':''}
+      <button class="rb" onclick="rmImg(${i},event)"><i class="fas fa-times"></i></button>
+    </div>`).join('');
+  info.style.display=pending.length?'block':'none';
+  document.getElementById('ucount').textContent=pending.length;
+  const icon=document.getElementById('uzi');
+  const txt=document.getElementById('uzt');
+  if(pending.length){icon.className='fas fa-plus-circle';txt.textContent='Click to add more photos';}
+  else{icon.className='fas fa-cloud-upload-alt';txt.textContent='Click to upload or drag & drop photos here';}
+}
+
+function rmImg(i,e){e.stopPropagation();pending.splice(i,1);renderPrev();}
+function setCov(i){if(!i)return;pending.unshift(pending.splice(i,1)[0]);renderPrev();toast('Cover photo updated!');}
+
+function dov(e){e.preventDefault();document.getElementById('uz').classList.add('dv');}
+function dlv(){document.getElementById('uz').classList.remove('dv');}
+function drp(e){e.preventDefault();document.getElementById('uz').classList.remove('dv');readFiles(e.dataTransfer.files);}
+
+// ════ SAVE LISTING ════════════════════════════════════════
+function saveListing(){
+  const cat=document.getElementById('mcat').value;
+  const title=document.getElementById('mtitle').value.trim();
+  const price=parseInt(document.getElementById('mprice').value)||0;
+  if(!cat){toast('⚠️ Select a category');return;}
+  if(!title){toast('⚠️ Enter product title');return;}
+  if(!price){toast('⚠️ Enter price per day');return;}
+  if(!pending.length){toast('⚠️ Upload at least one image');return;}
+  const icons={bike:'🏍️',car:'🚗',laptop:'💻',camera:'📷'};
+  listings.unshift({
+    id:Date.now(), title, cat, ico:icons[cat]||'📦', price,
+    deposit:parseInt(document.getElementById('mdeposit').value)||0,
+    city:document.getElementById('mcity').value.trim(),
+    area:document.getElementById('marea').value.trim(),
+    desc:document.getElementById('mdesc').value.trim(),
+    avail:true,
+    imgs:pending.map(p=>p.base64),  // base64 strings stored here — always visible
+  });
+  renderDash(); renderGrid();
+  document.getElementById('aform').style.display='none';
+  document.getElementById('sp').classList.add('show');
+  toast('Listing saved successfully!');
+}
+
+// ════ RESET / MODAL ═══════════════════════════════════════
+function resetForm(){
+  document.getElementById('aform').style.display='block';
+  document.getElementById('sp').classList.remove('show');
+  ['mcat','mtitle','mprice','mdeposit','mcity','marea','mdesc'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.value='';
+  });
+  pending=[];
+  renderPrev();
+}
+function openAdd(){resetForm();document.getElementById('addMo').classList.add('open');}
+function closeAdd(){document.getElementById('addMo').classList.remove('open');}
+function co(e,id){if(e.target.id===id)document.getElementById(id).classList.remove('open');}
+
+// ════ DETAIL MODAL ════════════════════════════════════════
+function openDet(id){
+  const l=listings.find(x=>x.id===id);if(!l)return;
+  const mi=document.getElementById('dmi');
+  const ph=document.getElementById('dmph');
+  if(l.imgs.length){mi.src=l.imgs[0];mi.style.display='block';ph.style.display='none';}
+  else{mi.style.display='none';ph.style.display='flex';}
+  const ths=document.getElementById('dths');
+  ths.innerHTML=l.imgs.length>1?l.imgs.map((s,i)=>`<div class="det-th ${i===0?'active':''}" onclick="swDet('${s}',this)"><img src="${s}"/></div>`).join(''):'';
+  ths.style.display=l.imgs.length>1?'flex':'none';
+  document.getElementById('dtitle').textContent=l.title;
+  document.getElementById('dcat').textContent=cap(l.cat);
+  document.getElementById('dloc').textContent=[l.area,l.city].filter(Boolean).join(', ')||'Not specified';
+  document.getElementById('ddesc').textContent=l.desc||'No description provided.';
+  document.getElementById('dprice').textContent='₹'+l.price;
+  document.getElementById('ddep').textContent='₹'+(l.deposit||0);
+  document.getElementById('dstat').textContent='Pending Admin Review';
+  document.getElementById('davtxt').textContent=l.avail?'Available':'Booked';
+  document.getElementById('davicon').style.color=l.avail?'var(--green)':'#f59e0b';
+  document.getElementById('detMo').classList.add('open');
+}
+function swDet(src,el){
+  document.getElementById('dmi').src=src;
+  document.getElementById('dmi').style.display='block';
+  document.getElementById('dmph').style.display='none';
+  document.querySelectorAll('.det-th').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+}
+function closeDet(){document.getElementById('detMo').classList.remove('open');}
+
+// ════ DELETE ══════════════════════════════════════════════
+function del(id){
+  if(!confirm('Delete this listing?'))return;
+  listings=listings.filter(l=>l.id!==id);
+  renderDash(); renderGrid();
+  toast('Listing deleted');
+}
+
+// ════ HELPERS ═════════════════════════════════════════════
+function cap(s){return s?s.charAt(0).toUpperCase()+s.slice(1):'';}
+function cico(c){return{bike:'fa-motorcycle',car:'fa-car',laptop:'fa-laptop',camera:'fa-camera'}[c]||'fa-tag';}
+function escH(s){const d=document.createElement('div');d.textContent=s;return d.innerHTML;}
+let _t;
+function toast(msg){clearTimeout(_t);document.getElementById('tmsg').textContent=msg;document.getElementById('toastEl').classList.add('show');_t=setTimeout(()=>document.getElementById('toastEl').classList.remove('show'),3400);}
+
+// init
+renderDash(); renderGrid();
+</script>
+</body>
+</html>

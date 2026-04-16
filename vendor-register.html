@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Vendor Registration – RentEase</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--primary:#FF4D00;--primary-dark:#cc3d00;--secondary:#0A0A0A;--bg:#F5F3EF;--bg2:#EDEBE5;--white:#fff;--text:#1a1a1a;--text-light:#666;--radius:18px}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text)}
+    h1,h2,h3,h4{font-family:'Syne',sans-serif}
+    nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:72px;background:rgba(10,10,10,.97);backdrop-filter:blur(16px)}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-icon{width:38px;height:38px;background:var(--primary);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff}
+    .logo span{font-family:'Syne',sans-serif;font-size:1.35rem;font-weight:800;color:#fff}
+    .logo span em{color:var(--primary);font-style:normal}
+    .page-hero{background:var(--secondary);padding:120px 5% 60px;text-align:center}
+    .page-hero h1{font-size:clamp(2rem,5vw,3.2rem);font-weight:800;color:#fff;letter-spacing:-1.5px;margin-bottom:14px}
+    .page-hero h1 span{color:var(--primary)}
+    .page-hero p{color:rgba(255,255,255,.6);font-size:1rem;max-width:500px;margin:0 auto}
+    .register-section{padding:60px 5% 80px;max-width:900px;margin:0 auto}
+    .progress-bar{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:48px}
+    .prog-step{display:flex;align-items:center;gap:10px}
+    .prog-num{width:40px;height:40px;border-radius:50%;background:var(--bg2);border:2px solid #ddd;display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:700;font-size:.9rem;color:var(--text-light);transition:all .3s}
+    .prog-step.active .prog-num,.prog-step.done .prog-num{background:var(--primary);border-color:var(--primary);color:#fff}
+    .prog-label{font-size:.82rem;font-weight:600;color:var(--text-light)}
+    .prog-step.active .prog-label{color:var(--primary)}
+    .prog-line{width:60px;height:2px;background:#ddd;margin:0 4px}
+    .form-card{background:var(--white);border-radius:var(--radius);padding:40px 44px;box-shadow:0 4px 32px rgba(0,0,0,.08)}
+    .form-section{display:none}
+    .form-section.active{display:block}
+    .form-section h3{font-size:1.4rem;font-weight:800;margin-bottom:6px}
+    .form-section > p{color:var(--text-light);font-size:.9rem;margin-bottom:28px}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+    .form-group{display:flex;flex-direction:column;gap:7px}
+    .form-group.full{grid-column:1/-1}
+    .form-group label{font-size:.8rem;font-weight:600;color:var(--text-light);text-transform:uppercase;letter-spacing:.8px}
+    .form-group input,.form-group select,.form-group textarea{border:1.5px solid var(--bg2);border-radius:10px;padding:12px 14px;font-size:.95rem;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;transition:border-color .2s;background:var(--bg)}
+    .form-group input:focus,.form-group select:focus,.form-group textarea:focus{border-color:var(--primary);background:#fff}
+    .form-group textarea{resize:vertical;min-height:100px}
+    .upload-area{border:2px dashed #ddd;border-radius:12px;padding:36px;text-align:center;cursor:pointer;transition:all .2s;background:var(--bg)}
+    .upload-area:hover{border-color:var(--primary);background:rgba(255,77,0,.03)}
+    .upload-area i{font-size:2.5rem;color:var(--text-light);margin-bottom:12px;display:block}
+    .upload-area p{font-size:.9rem;color:var(--text-light)}
+    .upload-area small{font-size:.78rem;color:#aaa}
+    .upload-area input[type=file]{display:none}
+    .preview-imgs{display:flex;gap:10px;flex-wrap:wrap;margin-top:14px}
+    .preview-img{width:80px;height:80px;border-radius:10px;object-fit:cover;border:2px solid var(--bg2)}
+    .category-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:4px}
+    .cat-option{background:var(--bg);border:2px solid var(--bg2);border-radius:12px;padding:18px 10px;text-align:center;cursor:pointer;transition:all .2s}
+    .cat-option:hover,.cat-option.selected{background:rgba(255,77,0,.08);border-color:var(--primary)}
+    .cat-option i{font-size:1.6rem;display:block;margin-bottom:8px}
+    .cat-option.bike i{color:#FF6B35}.cat-option.car i{color:#2196F3}.cat-option.laptop i{color:#2E7D32}.cat-option.camera i{color:#F57C00}
+    .cat-option span{font-size:.85rem;font-weight:600}
+    .form-actions{display:flex;justify-content:space-between;align-items:center;margin-top:32px}
+    .btn-back{background:transparent;border:1.5px solid var(--bg2);color:var(--text-light);padding:12px 28px;border-radius:10px;font-size:.92rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+    .btn-back:hover{border-color:var(--text-light);color:var(--text)}
+    .btn-next{background:var(--primary);color:#fff;border:none;padding:13px 36px;border-radius:10px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;transition:all .2s;display:flex;align-items:center;gap:8px}
+    .btn-next:hover{background:var(--primary-dark);transform:translateY(-1px)}
+    .success-screen{text-align:center;padding:20px 0}
+    .success-icon{width:88px;height:88px;background:rgba(34,197,94,.12);border-radius:50%;margin:0 auto 24px;display:flex;align-items:center;justify-content:center;font-size:2.4rem;color:#22c55e}
+    .success-screen h3{font-size:1.8rem;font-weight:800;margin-bottom:12px}
+    .success-screen p{color:var(--text-light);font-size:.95rem;max-width:400px;margin:0 auto 28px;line-height:1.7}
+    .benefits-list{display:grid;grid-template-columns:1fr 1fr;gap:16px;text-align:left;margin-top:32px}
+    .benefit{background:var(--bg);border-radius:12px;padding:18px;display:flex;gap:12px;align-items:flex-start}
+    .benefit i{color:var(--primary);margin-top:2px}
+    .benefit strong{display:block;font-size:.9rem;font-weight:700;margin-bottom:3px}
+    .benefit span{font-size:.82rem;color:var(--text-light)}
+    @media(max-width:680px){.form-grid{grid-template-columns:1fr}.category-grid{grid-template-columns:repeat(2,1fr)}.benefits-list{grid-template-columns:1fr}.form-card{padding:24px 20px}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo"><div class="logo-icon"><i class="fas fa-bolt"></i></div><span>Rent<em>Ease</em></span></a>
+  <a href="index.html" style="color:rgba(255,255,255,.6);text-decoration:none;font-size:.88rem;"><i class="fas fa-arrow-left"></i> Back to Home</a>
+</nav>
+<div class="page-hero">
+  <h1>Become a <span>RentEase</span> Vendor</h1>
+  <p>List your bikes, cars, laptops or cameras and start earning. It's completely free to join!</p>
+</div>
+<div class="register-section">
+  <div class="progress-bar">
+    <div class="prog-step active" id="ps1"><div class="prog-num">1</div><div class="prog-label">Account</div></div>
+    <div class="prog-line"></div>
+    <div class="prog-step" id="ps2"><div class="prog-num">2</div><div class="prog-label">Business</div></div>
+    <div class="prog-line"></div>
+    <div class="prog-step" id="ps3"><div class="prog-num">3</div><div class="prog-label">First Listing</div></div>
+    <div class="prog-line"></div>
+    <div class="prog-step" id="ps4"><div class="prog-num">4</div><div class="prog-label">Done!</div></div>
+  </div>
+  <div class="form-card">
+    <!-- Step 1 -->
+    <div class="form-section active" id="step1">
+      <h3>Create Your Account</h3>
+      <p>Set up your vendor login credentials to get started.</p>
+      <div class="form-grid">
+        <div class="form-group"><label>First Name</label><input type="text" placeholder="First name"/></div>
+        <div class="form-group"><label>Last Name</label><input type="text" placeholder="Last name"/></div>
+        <div class="form-group"><label>Email Address</label><input type="email" placeholder="vendor@example.com"/></div>
+        <div class="form-group"><label>Phone Number</label><input type="tel" placeholder="+91 98765 43210"/></div>
+        <div class="form-group"><label>Password</label><input type="password" placeholder="Create strong password"/></div>
+        <div class="form-group"><label>Confirm Password</label><input type="password" placeholder="Confirm password"/></div>
+      </div>
+      <div class="form-actions"><div></div><button class="btn-next" onclick="goStep(2)">Continue <i class="fas fa-arrow-right"></i></button></div>
+    </div>
+    <!-- Step 2 -->
+    <div class="form-section" id="step2">
+      <h3>Business Information</h3>
+      <p>Tell us about your rental business so customers can trust you.</p>
+      <div class="form-grid">
+        <div class="form-group full"><label>Business / Shop Name</label><input type="text" placeholder="e.g. Raj Bike Rentals"/></div>
+        <div class="form-group"><label>City</label><input type="text" placeholder="Chennai"/></div>
+        <div class="form-group"><label>Area / Locality</label><input type="text" placeholder="Anna Nagar"/></div>
+        <div class="form-group full"><label>Full Address</label><textarea placeholder="Shop address, landmark, pincode…"></textarea></div>
+        <div class="form-group"><label>Aadhar / PAN Number</label><input type="text" placeholder="For identity verification"/></div>
+        <div class="form-group"><label>Bank Account Number</label><input type="text" placeholder="For earnings payout"/></div>
+        <div class="form-group full"><label>About Your Business</label><textarea placeholder="Briefly describe your rental service, experience, what makes you special…"></textarea></div>
+      </div>
+      <div class="form-actions"><button class="btn-back" onclick="goStep(1)"><i class="fas fa-arrow-left"></i> Back</button><button class="btn-next" onclick="goStep(3)">Continue <i class="fas fa-arrow-right"></i></button></div>
+    </div>
+    <!-- Step 3 -->
+    <div class="form-section" id="step3">
+      <h3>Add Your First Listing</h3>
+      <p>Upload your first product so customers can find and book it.</p>
+      <div class="form-group" style="margin-bottom:20px;">
+        <label>Select Category</label>
+        <div class="category-grid">
+          <div class="cat-option bike" onclick="selectCat(this)"><i class="fas fa-motorcycle"></i><span>Bike</span></div>
+          <div class="cat-option car" onclick="selectCat(this)"><i class="fas fa-car"></i><span>Car</span></div>
+          <div class="cat-option laptop" onclick="selectCat(this)"><i class="fas fa-laptop"></i><span>Laptop</span></div>
+          <div class="cat-option camera" onclick="selectCat(this)"><i class="fas fa-camera"></i><span>Camera</span></div>
+        </div>
+      </div>
+      <div class="form-grid">
+        <div class="form-group full"><label>Product Title</label><input type="text" placeholder="e.g. Royal Enfield Classic 350 – 2022 Model"/></div>
+        <div class="form-group"><label>Price Per Day (₹)</label><input type="number" placeholder="499"/></div>
+        <div class="form-group"><label>Security Deposit (₹)</label><input type="number" placeholder="2000"/></div>
+        <div class="form-group full"><label>Product Description</label><textarea placeholder="Year, condition, features, what's included, pickup location, rules…"></textarea></div>
+        <div class="form-group full">
+          <label>Upload Product Images</label>
+          <div class="upload-area" onclick="document.getElementById('imgInput').click()">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <p>Click to upload photos of your product</p>
+            <small>JPG, PNG — Max 5MB each. Upload at least 3 clear photos.</small>
+            <input type="file" id="imgInput" accept="image/*" multiple onchange="previewImages(this)"/>
+          </div>
+          <div class="preview-imgs" id="previewImgs"></div>
+        </div>
+      </div>
+      <div class="form-actions"><button class="btn-back" onclick="goStep(2)"><i class="fas fa-arrow-left"></i> Back</button><button class="btn-next" onclick="goStep(4)">Submit for Review <i class="fas fa-check"></i></button></div>
+    </div>
+    <!-- Step 4: Success -->
+    <div class="form-section" id="step4">
+      <div class="success-screen">
+        <div class="success-icon"><i class="fas fa-check"></i></div>
+        <h3>You're All Set! 🎉</h3>
+        <p>Your vendor application has been submitted. Our admin team will review and approve your account within 24–48 hours. You'll receive a confirmation email once verified.</p>
+        <a href="index.html"><button class="btn-next" style="margin:0 auto;display:inline-flex;">Go to Homepage <i class="fas fa-home"></i></button></a>
+        <div class="benefits-list">
+          <div class="benefit"><i class="fas fa-bolt"></i><div><strong>Instant Dashboard</strong><span>Access your vendor dashboard once approved</span></div></div>
+          <div class="benefit"><i class="fas fa-rupee-sign"></i><div><strong>Daily Payouts</strong><span>Earnings transferred directly to your bank</span></div></div>
+          <div class="benefit"><i class="fas fa-chart-line"></i><div><strong>Booking Analytics</strong><span>Track views, bookings and revenue</span></div></div>
+          <div class="benefit"><i class="fas fa-headset"></i><div><strong>Vendor Support</strong><span>Dedicated support line for vendors</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<script>
+  function goStep(n){
+    document.querySelectorAll('.form-section').forEach(s=>s.classList.remove('active'));
+    document.getElementById('step'+n).classList.add('active');
+    for(let i=1;i<=4;i++){
+      const ps=document.getElementById('ps'+i);
+      ps.className='prog-step'+(i<n?' done':i===n?' active':'');
+    }
+    window.scrollTo({top:0,behavior:'smooth'});
+  }
+  function selectCat(el){document.querySelectorAll('.cat-option').forEach(c=>c.classList.remove('selected'));el.classList.add('selected')}
+  function previewImages(input){
+    const container=document.getElementById('previewImgs');container.innerHTML='';
+    Array.from(input.files).slice(0,6).forEach(f=>{const reader=new FileReader();reader.onload=e=>{const img=document.createElement('img');img.src=e.target.result;img.className='preview-img';container.appendChild(img)};reader.readAsDataURL(f)});
+  }
+</script>
+</body>
+</html>

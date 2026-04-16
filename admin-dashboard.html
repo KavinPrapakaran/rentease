@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard – RentEase</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--primary:#FF4D00;--secondary:#0A0A0A;--bg:#F5F3EF;--bg2:#EDEBE5;--white:#fff;--text:#1a1a1a;--text-light:#666;--sidebar:230px;--radius:16px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);display:flex}
+    h1,h2,h3,h4{font-family:'Syne',sans-serif}
+    .sidebar{width:var(--sidebar);background:var(--secondary);min-height:100vh;padding:28px 0;position:fixed;left:0;top:0;bottom:0;display:flex;flex-direction:column;z-index:100}
+    .sidebar-logo{padding:0 24px 28px;border-bottom:1px solid rgba(255,255,255,.07)}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-icon{width:34px;height:34px;background:var(--primary);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;color:#fff}
+    .logo span{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;color:#fff}
+    .logo span em{color:var(--primary);font-style:normal}
+    .admin-badge{display:inline-block;background:rgba(255,77,0,.2);color:var(--primary);font-size:.68rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:3px 9px;border-radius:50px;margin-top:6px}
+    .sidebar-menu{padding:20px 0;flex:1}
+    .menu-label{padding:10px 24px 6px;font-size:.68rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,.25)}
+    .menu-item{display:flex;align-items:center;gap:12px;padding:12px 24px;color:rgba(255,255,255,.55);text-decoration:none;font-size:.88rem;font-weight:500;transition:all .2s;cursor:pointer;border-left:3px solid transparent}
+    .menu-item:hover,.menu-item.active{color:#fff;background:rgba(255,255,255,.06);border-left-color:var(--primary)}
+    .menu-item i{width:18px;text-align:center}
+    .menu-item .badge{margin-left:auto;background:var(--primary);color:#fff;font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:50px}
+    .sidebar-user{padding:16px 24px;border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:12px}
+    .user-avatar{width:36px;height:36px;border-radius:50%;background:#FFD200;display:flex;align-items:center;justify-content:center;color:var(--secondary);font-weight:700;font-size:.9rem}
+    .user-info strong{display:block;color:#fff;font-size:.85rem;font-weight:600}
+    .user-info span{color:rgba(255,255,255,.4);font-size:.72rem}
+    .main{margin-left:var(--sidebar);flex:1;padding:32px 36px;min-height:100vh}
+    .top-bar{display:flex;align-items:center;justify-content:space-between;margin-bottom:32px}
+    .top-bar h2{font-size:1.6rem;font-weight:800;letter-spacing:-.5px}
+    .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-bottom:28px}
+    .stat-card{background:var(--white);border-radius:var(--radius);padding:22px;box-shadow:0 2px 16px rgba(0,0,0,.06)}
+    .stat-icon{width:44px;height:44px;border-radius:11px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;margin-bottom:12px}
+    .s1 .stat-icon{background:rgba(34,197,94,.12);color:#22c55e}
+    .s2 .stat-icon{background:rgba(59,130,246,.12);color:#3b82f6}
+    .s3 .stat-icon{background:rgba(255,77,0,.12);color:var(--primary)}
+    .s4 .stat-icon{background:rgba(251,191,36,.12);color:#fbbf24}
+    .stat-value{font-family:'Syne',sans-serif;font-size:1.7rem;font-weight:800;line-height:1;margin-bottom:3px}
+    .stat-label{font-size:.78rem;color:var(--text-light)}
+    .stat-change{font-size:.76rem;margin-top:7px;color:#22c55e}
+    .content-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:24px;margin-bottom:24px}
+    .card{background:var(--white);border-radius:var(--radius);box-shadow:0 2px 16px rgba(0,0,0,.06);overflow:hidden}
+    .card-header{padding:18px 22px;border-bottom:1px solid var(--bg2);display:flex;align-items:center;justify-content:space-between}
+    .card-header h4{font-size:.98rem;font-weight:700}
+    .card-header a,.card-header span{font-size:.78rem;color:var(--primary);text-decoration:none;cursor:pointer}
+    .table{width:100%;border-collapse:collapse}
+    .table th{padding:10px 16px;text-align:left;font-size:.72rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.8px;background:var(--bg)}
+    .table td{padding:13px 16px;font-size:.86rem;border-bottom:1px solid var(--bg2)}
+    .table tr:last-child td{border-bottom:none}
+    .table tr:hover td{background:var(--bg)}
+    .status{display:inline-block;padding:4px 10px;border-radius:50px;font-size:.7rem;font-weight:700;text-transform:uppercase}
+    .status.pending{background:rgba(251,191,36,.15);color:#d97706}
+    .status.approved{background:rgba(34,197,94,.12);color:#16a34a}
+    .status.rejected{background:rgba(239,68,68,.1);color:#dc2626}
+    .status.active{background:rgba(59,130,246,.12);color:#2563eb}
+    .action-btns{display:flex;gap:6px}
+    .btn-approve{background:rgba(34,197,94,.12);color:#16a34a;border:none;padding:6px 12px;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+    .btn-approve:hover{background:#22c55e;color:#fff}
+    .btn-reject{background:rgba(239,68,68,.1);color:#dc2626;border:none;padding:6px 12px;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+    .btn-reject:hover{background:#ef4444;color:#fff}
+    .btn-view{background:var(--bg2);color:var(--text-light);border:none;padding:6px 12px;border-radius:7px;font-size:.75rem;font-weight:600;cursor:pointer;transition:all .2s}
+    .btn-view:hover{background:var(--primary);color:#fff}
+    .commission-card{padding:22px}
+    .commission-row{display:flex;justify-content:space-between;align-items:center;padding:12px 0;border-bottom:1px solid var(--bg2)}
+    .commission-row:last-child{border-bottom:none}
+    .commission-row .label{font-size:.85rem;color:var(--text-light)}
+    .commission-row .value{font-family:'Syne',sans-serif;font-weight:700;font-size:1rem}
+    .commission-row .value.green{color:#22c55e}
+    .commission-row .value.primary{color:var(--primary)}
+    .toast{position:fixed;bottom:24px;right:24px;background:var(--secondary);color:#fff;padding:12px 20px;border-radius:10px;font-size:.86rem;display:flex;align-items:center;gap:8px;z-index:300;transform:translateY(60px);opacity:0;transition:all .3s}
+    .toast.show{transform:translateY(0);opacity:1}
+    .toast i{color:var(--primary)}
+  </style>
+</head>
+<body>
+<div class="sidebar">
+  <div class="sidebar-logo">
+    <a href="index.html" class="logo"><div class="logo-icon"><i class="fas fa-bolt"></i></div><span>Rent<em>Ease</em></span></a>
+    <div class="admin-badge">Admin Panel</div>
+  </div>
+  <div class="sidebar-menu">
+    <div class="menu-label">Overview</div>
+    <a class="menu-item active" onclick="setActive(this)"><i class="fas fa-th-large"></i> Dashboard</a>
+    <a class="menu-item" onclick="setActive(this)"><i class="fas fa-chart-bar"></i> Analytics</a>
+    <div class="menu-label">Management</div>
+    <a class="menu-item" onclick="setActive(this)"><i class="fas fa-store"></i> Vendors <span class="badge">5</span></a>
+    <a class="menu-item" onclick="setActive(this)"><i class="fas fa-users"></i> Customers</a>
+    <a class="menu-item" onclick="setActive(this)"><i class="fas fa-boxes"></i> Listings <span class="badge">12</span></a>
+    <a class="menu-item" onclick="setActive(this)"><i class="fas fa-calendar-check"></i> Bookings</a>
+    <div class="menu-label">Finance</div>
+    <a class="menu-item" onclick="setActive(this)"><i class="fas fa-rupee-sign"></i> Commissions</a>
+    <a class="menu-item" onclick="setActive(this)"><i class="fas fa-file-invoice"></i> Transactions</a>
+    <div class="menu-label">System</div>
+    <a class="menu-item" onclick="setActive(this)"><i class="fas fa-bell"></i> Notifications</a>
+    <a class="menu-item" onclick="setActive(this)"><i class="fas fa-cog"></i> Settings</a>
+    <a href="index.html" class="menu-item"><i class="fas fa-sign-out-alt"></i> Logout</a>
+  </div>
+  <div class="sidebar-user">
+    <div class="user-avatar">A</div>
+    <div class="user-info"><strong>Admin</strong><span>Super Administrator</span></div>
+  </div>
+</div>
+
+<div class="main">
+  <div class="top-bar">
+    <div><h2>Admin Dashboard</h2><p style="color:var(--text-light);font-size:.85rem;margin-top:3px;">Platform overview — <span id="dateStr"></span></p></div>
+  </div>
+  <div class="stats-grid">
+    <div class="stat-card s1"><div class="stat-icon"><i class="fas fa-rupee-sign"></i></div><div class="stat-value">₹1.8L</div><div class="stat-label">Platform Revenue (Month)</div><div class="stat-change"><i class="fas fa-arrow-up"></i> +22% this month</div></div>
+    <div class="stat-card s2"><div class="stat-icon"><i class="fas fa-calendar-check"></i></div><div class="stat-value">284</div><div class="stat-label">Total Bookings (Month)</div><div class="stat-change"><i class="fas fa-arrow-up"></i> +34 this week</div></div>
+    <div class="stat-card s3"><div class="stat-icon"><i class="fas fa-store"></i></div><div class="stat-value">1,842</div><div class="stat-label">Active Vendors</div><div class="stat-change">5 pending approval</div></div>
+    <div class="stat-card s4"><div class="stat-icon"><i class="fas fa-users"></i></div><div class="stat-value">42,180</div><div class="stat-label">Registered Users</div><div class="stat-change"><i class="fas fa-arrow-up"></i> +218 this week</div></div>
+  </div>
+
+  <div class="content-grid">
+    <!-- VENDOR APPROVALS -->
+    <div class="card">
+      <div class="card-header"><h4>Pending Vendor Approvals</h4><span onclick="showToast('Showing all 5 pending')">View all (5)</span></div>
+      <table class="table">
+        <thead><tr><th>Vendor Name</th><th>Category</th><th>City</th><th>Applied</th><th>Actions</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Raj's Bike Rentals</strong></td><td>Bikes</td><td>Chennai</td><td>Today</td><td><div class="action-btns"><button class="btn-approve" onclick="approve(this,'vendor')">Approve</button><button class="btn-reject" onclick="reject(this)">Reject</button></div></td></tr>
+          <tr><td><strong>Click & Capture Studio</strong></td><td>Cameras</td><td>Coimbatore</td><td>Yesterday</td><td><div class="action-btns"><button class="btn-approve" onclick="approve(this,'vendor')">Approve</button><button class="btn-reject" onclick="reject(this)">Reject</button></div></td></tr>
+          <tr><td><strong>Wheels On Road</strong></td><td>Cars</td><td>Erode</td><td>Jun 10</td><td><div class="action-btns"><button class="btn-approve" onclick="approve(this,'vendor')">Approve</button><button class="btn-reject" onclick="reject(this)">Reject</button></div></td></tr>
+          <tr><td><strong>TechGadget Rentals</strong></td><td>Laptops</td><td>Madurai</td><td>Jun 9</td><td><div class="action-btns"><button class="btn-approve" onclick="approve(this,'vendor')">Approve</button><button class="btn-reject" onclick="reject(this)">Reject</button></div></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <!-- COMMISSION SUMMARY -->
+    <div class="card">
+      <div class="card-header"><h4>Commission Summary</h4></div>
+      <div class="commission-card">
+        <div class="commission-row"><span class="label">Bikes Commission (10%)</span><span class="value primary">₹12,400</span></div>
+        <div class="commission-row"><span class="label">Cars Commission (12%)</span><span class="value primary">₹28,600</span></div>
+        <div class="commission-row"><span class="label">Laptops Commission (8%)</span><span class="value primary">₹9,200</span></div>
+        <div class="commission-row"><span class="label">Cameras Commission (10%)</span><span class="value primary">₹11,800</span></div>
+        <div class="commission-row"><span class="label" style="font-weight:700;color:var(--text)">Total Commission (June)</span><span class="value green">₹62,000</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PENDING LISTINGS -->
+  <div class="card">
+    <div class="card-header"><h4>Pending Listing Approvals</h4><span onclick="showToast('12 listings pending review')">View all (12)</span></div>
+    <table class="table">
+      <thead><tr><th>Product</th><th>Vendor</th><th>Category</th><th>Price/Day</th><th>Submitted</th><th>Status</th><th>Actions</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Royal Enfield 350</strong></td><td>Raj's Bike Rentals</td><td>Bike</td><td>₹399</td><td>Today</td><td><span class="status pending">Pending</span></td><td><div class="action-btns"><button class="btn-approve" onclick="approve(this,'listing')">Approve</button><button class="btn-reject" onclick="reject(this)">Reject</button><button class="btn-view">View</button></div></td></tr>
+        <tr><td><strong>Canon EOS 5D IV</strong></td><td>Click &amp; Capture</td><td>Camera</td><td>₹1,499</td><td>Yesterday</td><td><span class="status pending">Pending</span></td><td><div class="action-btns"><button class="btn-approve" onclick="approve(this,'listing')">Approve</button><button class="btn-reject" onclick="reject(this)">Reject</button><button class="btn-view">View</button></div></td></tr>
+        <tr><td><strong>Honda City 2022</strong></td><td>Wheels On Road</td><td>Car</td><td>₹1,800</td><td>Jun 10</td><td><span class="status pending">Pending</span></td><td><div class="action-btns"><button class="btn-approve" onclick="approve(this,'listing')">Approve</button><button class="btn-reject" onclick="reject(this)">Reject</button><button class="btn-view">View</button></div></td></tr>
+        <tr><td><strong>MacBook Air M2</strong></td><td>TechGadget Rentals</td><td>Laptop</td><td>₹599</td><td>Jun 9</td><td><span class="status approved">Approved</span></td><td><div class="action-btns"><button class="btn-view">View</button></div></td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
+<script>
+  document.getElementById('dateStr').textContent = new Date().toLocaleDateString('en-IN',{weekday:'long',year:'numeric',month:'long',day:'numeric'});
+  function setActive(el){document.querySelectorAll('.menu-item').forEach(m=>m.classList.remove('active'));el.classList.add('active')}
+  function approve(btn,type){const row=btn.closest('tr');row.querySelector('.action-btns').innerHTML='<span class="status approved">Approved</span>';showToast(type==='vendor'?'Vendor approved & notified!':'Listing approved & live!')}
+  function reject(btn){const row=btn.closest('tr');row.querySelector('.action-btns').innerHTML='<span class="status rejected">Rejected</span>';showToast('Rejection email sent.')}
+  let t;
+  function showToast(msg){clearTimeout(t);document.getElementById('toastMsg').textContent=msg;document.getElementById('toast').classList.add('show');t=setTimeout(()=>document.getElementById('toast').classList.remove('show'),3000)}
+</script>
+</body>
+</html>

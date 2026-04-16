@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Browse Rentals – RentEase</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    :root{--primary:#FF4D00;--secondary:#0A0A0A;--bg:#F5F3EF;--bg2:#EDEBE5;--white:#fff;--text:#1a1a1a;--text-light:#666;--radius:16px}
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text)}
+    h1,h2,h3,h4{font-family:'Syne',sans-serif}
+    nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:68px;background:rgba(10,10,10,.97);backdrop-filter:blur(16px)}
+    .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
+    .logo-icon{width:34px;height:34px;background:var(--primary);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;color:#fff}
+    .logo span{font-family:'Syne',sans-serif;font-size:1.2rem;font-weight:800;color:#fff}
+    .logo span em{color:var(--primary);font-style:normal}
+    .nav-right{display:flex;gap:12px;align-items:center}
+    .btn-ghost{background:transparent;border:1.5px solid rgba(255,255,255,.2);color:#fff;padding:8px 18px;border-radius:50px;font-size:.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;text-decoration:none}
+    .btn-ghost:hover{border-color:var(--primary);color:var(--primary)}
+    .btn-primary{background:var(--primary);border:none;color:#fff;padding:9px 20px;border-radius:50px;font-size:.85rem;cursor:pointer;font-family:'DM Sans',sans-serif;font-weight:600;transition:all .2s}
+    .page-header{background:var(--secondary);padding:100px 5% 48px}
+    .page-header h1{font-size:clamp(1.8rem,4vw,2.8rem);font-weight:800;color:#fff;letter-spacing:-1px;margin-bottom:10px}
+    .page-header p{color:rgba(255,255,255,.5);font-size:.95rem}
+    .listings-page{padding:36px 5%;max-width:1400px;margin:0 auto;display:grid;grid-template-columns:260px 1fr;gap:32px}
+    .sidebar-filters{position:sticky;top:88px;height:fit-content}
+    .filter-card{background:var(--white);border-radius:var(--radius);padding:24px;box-shadow:0 2px 16px rgba(0,0,0,.07);margin-bottom:16px}
+    .filter-card h4{font-size:.95rem;font-weight:700;margin-bottom:16px;padding-bottom:12px;border-bottom:1px solid var(--bg2)}
+    .filter-group{margin-bottom:14px}
+    .filter-group label{display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--text);cursor:pointer;padding:6px 0}
+    .filter-group input[type=checkbox]{accent-color:var(--primary);width:16px;height:16px}
+    .price-range{display:flex;gap:8px;align-items:center}
+    .price-range input{flex:1;border:1.5px solid var(--bg2);border-radius:8px;padding:9px 11px;font-size:.85rem;font-family:'DM Sans',sans-serif;outline:none}
+    .price-range input:focus{border-color:var(--primary)}
+    .price-range span{color:var(--text-light);font-size:.85rem}
+    .btn-apply{width:100%;background:var(--primary);color:#fff;border:none;padding:11px;border-radius:9px;font-size:.9rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
+    .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+    .results-header p{font-size:.9rem;color:var(--text-light)}
+    .sort-select{border:1.5px solid var(--bg2);border-radius:8px;padding:9px 14px;font-size:.85rem;font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);outline:none;cursor:pointer}
+    .sort-select:focus{border-color:var(--primary)}
+    .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
+    .rental-card{background:var(--white);border-radius:var(--radius);overflow:hidden;box-shadow:0 2px 16px rgba(0,0,0,.08);transition:all .3s;cursor:pointer}
+    .rental-card:hover{transform:translateY(-4px);box-shadow:0 16px 48px rgba(0,0,0,.13)}
+    .card-img{position:relative;height:190px;overflow:hidden;background:var(--bg2)}
+    .card-img img{width:100%;height:100%;object-fit:cover;transition:transform .4s}
+    .rental-card:hover .card-img img{transform:scale(1.05)}
+    .card-badge{position:absolute;top:10px;left:10px;background:#22c55e;color:#fff;font-size:.7rem;font-weight:700;padding:3px 9px;border-radius:50px;text-transform:uppercase}
+    .card-badge.booked{background:#f59e0b}
+    .card-heart{position:absolute;top:10px;right:10px;width:32px;height:32px;background:rgba(255,255,255,.9);border-radius:50%;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:.85rem;transition:all .2s}
+    .card-heart:hover{background:#fff}
+    .card-heart i{color:var(--text-light)}
+    .card-body{padding:16px 18px}
+    .card-body h4{font-size:.97rem;font-weight:700;margin-bottom:4px}
+    .card-loc{display:flex;align-items:center;gap:4px;color:var(--text-light);font-size:.8rem;margin-bottom:10px}
+    .card-loc i{color:var(--primary);font-size:.75rem}
+    .card-rate{display:flex;align-items:center;gap:4px;font-size:.8rem;color:var(--text-light);margin-bottom:12px}
+    .card-rate .s{color:#FFB800}
+    .card-rate strong{color:var(--text)}
+    .card-foot{display:flex;align-items:center;justify-content:space-between;padding-top:12px;border-top:1px solid var(--bg2)}
+    .card-price strong{font-family:'Syne',sans-serif;font-size:1.15rem;font-weight:800;color:var(--primary)}
+    .card-price span{font-size:.76rem;color:var(--text-light)}
+    .btn-bk{background:var(--secondary);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
+    .btn-bk:hover{background:var(--primary)}
+    .toast{position:fixed;bottom:24px;right:24px;background:var(--secondary);color:#fff;padding:13px 20px;border-radius:12px;font-size:.88rem;display:flex;align-items:center;gap:8px;z-index:300;transform:translateY(60px);opacity:0;transition:all .3s;box-shadow:0 8px 28px rgba(0,0,0,.2)}
+    .toast.show{transform:translateY(0);opacity:1}
+    .toast i{color:var(--primary)}
+    @media(max-width:900px){.listings-page{grid-template-columns:1fr}.sidebar-filters{position:static}}
+  </style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="logo"><div class="logo-icon"><i class="fas fa-bolt"></i></div><span>Rent<em>Ease</em></span></a>
+  <div class="nav-right">
+    <a href="index.html" class="btn-ghost">Home</a>
+    <button class="btn-primary" onclick="showToast('Please sign in to continue')">Sign In</button>
+  </div>
+</nav>
+<div class="page-header">
+  <h1>Browse All Rentals</h1>
+  <p>Explore 5,200+ verified listings across bikes, cars, laptops and cameras.</p>
+</div>
+<div class="listings-page">
+  <!-- FILTERS -->
+  <div class="sidebar-filters">
+    <div class="filter-card">
+      <h4><i class="fas fa-sliders-h" style="color:var(--primary);margin-right:7px"></i>Filters</h4>
+      <div style="margin-bottom:16px">
+        <div style="font-size:.8rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Category</div>
+        <div class="filter-group"><label><input type="checkbox" checked/> <i class="fas fa-motorcycle" style="color:#FF6B35"></i> Bikes (1,240)</label></div>
+        <div class="filter-group"><label><input type="checkbox" checked/> <i class="fas fa-car" style="color:#2196F3"></i> Cars (980)</label></div>
+        <div class="filter-group"><label><input type="checkbox" checked/> <i class="fas fa-laptop" style="color:#2E7D32"></i> Laptops (760)</label></div>
+        <div class="filter-group"><label><input type="checkbox" checked/> <i class="fas fa-camera" style="color:#F57C00"></i> Cameras (620)</label></div>
+      </div>
+      <div style="margin-bottom:16px">
+        <div style="font-size:.8rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Price / Day</div>
+        <div class="price-range"><input type="number" placeholder="Min ₹"/><span>to</span><input type="number" placeholder="Max ₹"/></div>
+      </div>
+      <div style="margin-bottom:16px">
+        <div style="font-size:.8rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Availability</div>
+        <div class="filter-group"><label><input type="checkbox" checked/> Available Now</label></div>
+        <div class="filter-group"><label><input type="checkbox"/> Coming Soon</label></div>
+      </div>
+      <div>
+        <div style="font-size:.8rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Rating</div>
+        <div class="filter-group"><label><input type="checkbox"/> 4.5+ Stars ⭐</label></div>
+        <div class="filter-group"><label><input type="checkbox"/> 4+ Stars ⭐</label></div>
+      </div>
+      <button class="btn-apply" onclick="showToast('Filters applied!')">Apply Filters</button>
+    </div>
+  </div>
+  <!-- RESULTS -->
+  <div>
+    <div class="results-header">
+      <p>Showing <strong>5,200+</strong> results near Chennai</p>
+      <select class="sort-select"><option>Sort: Relevance</option><option>Price: Low to High</option><option>Price: High to Low</option><option>Best Rated</option><option>Newest First</option></select>
+    </div>
+    <div class="cards-grid">
+      <div class="rental-card"><div class="card-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80" alt=""/><span class="card-badge">Available</span><div class="card-heart"><i class="fas fa-heart"></i></div></div><div class="card-body"><h4>Royal Enfield Classic 350</h4><div class="card-loc"><i class="fas fa-map-marker-alt"></i> Anna Nagar, Chennai</div><div class="card-rate"><span class="s">★★★★★</span><strong>4.9</strong><span>(128)</span></div><div class="card-foot"><div class="card-price"><strong>₹399</strong><span>/day</span></div><button class="btn-bk" onclick="showToast('Sign in to book!')">Book Now</button></div></div></div>
+      <div class="rental-card"><div class="card-img"><img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&q=80" alt=""/><span class="card-badge">Available</span><div class="card-heart"><i class="fas fa-heart"></i></div></div><div class="card-body"><h4>Maruti Swift Dzire 2023</h4><div class="card-loc"><i class="fas fa-map-marker-alt"></i> T. Nagar, Chennai</div><div class="card-rate"><span class="s">★★★★★</span><strong>4.8</strong><span>(94)</span></div><div class="card-foot"><div class="card-price"><strong>₹1,299</strong><span>/day</span></div><button class="btn-bk" onclick="showToast('Sign in to book!')">Book Now</button></div></div></div>
+      <div class="rental-card"><div class="card-img"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&q=80" alt=""/><span class="card-badge">Available</span><div class="card-heart"><i class="fas fa-heart"></i></div></div><div class="card-body"><h4>MacBook Pro M2 16"</h4><div class="card-loc"><i class="fas fa-map-marker-alt"></i> Velachery, Chennai</div><div class="card-rate"><span class="s">★★★★★</span><strong>4.9</strong><span>(56)</span></div><div class="card-foot"><div class="card-price"><strong>₹799</strong><span>/day</span></div><button class="btn-bk" onclick="showToast('Sign in to book!')">Book Now</button></div></div></div>
+      <div class="rental-card"><div class="card-img"><img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&q=80" alt=""/><span class="card-badge">Available</span><div class="card-heart"><i class="fas fa-heart"></i></div></div><div class="card-body"><h4>Canon EOS R5 Mirrorless</h4><div class="card-loc"><i class="fas fa-map-marker-alt"></i> Adyar, Chennai</div><div class="card-rate"><span class="s">★★★★☆</span><strong>4.7</strong><span>(83)</span></div><div class="card-foot"><div class="card-price"><strong>₹1,199</strong><span>/day</span></div><button class="btn-bk" onclick="showToast('Sign in to book!')">Book Now</button></div></div></div>
+      <div class="rental-card"><div class="card-img"><img src="https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=400&q=80" alt=""/><span class="card-badge booked">Booked</span><div class="card-heart"><i class="fas fa-heart"></i></div></div><div class="card-body"><h4>Honda Activa 6G 2023</h4><div class="card-loc"><i class="fas fa-map-marker-alt"></i> Tambaram, Chennai</div><div class="card-rate"><span class="s">★★★★★</span><strong>4.8</strong><span>(201)</span></div><div class="card-foot"><div class="card-price"><strong>₹199</strong><span>/day</span></div><button class="btn-bk" onclick="showToast('Currently booked')">Notify Me</button></div></div></div>
+      <div class="rental-card"><div class="card-img"><img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&q=80" alt=""/><span class="card-badge">Available</span><div class="card-heart"><i class="fas fa-heart"></i></div></div><div class="card-body"><h4>Dell XPS 15 RTX Gaming</h4><div class="card-loc"><i class="fas fa-map-marker-alt"></i> OMR, Chennai</div><div class="card-rate"><span class="s">★★★★★</span><strong>4.9</strong><span>(44)</span></div><div class="card-foot"><div class="card-price"><strong>₹699</strong><span>/day</span></div><button class="btn-bk" onclick="showToast('Sign in to book!')">Book Now</button></div></div></div>
+    </div>
+  </div>
+</div>
+<div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
+<script>
+  let t;
+  function showToast(msg){clearTimeout(t);document.getElementById('toastMsg').textContent=msg;document.getElementById('toast').classList.add('show');t=setTimeout(()=>document.getElementById('toast').classList.remove('show'),3000)}
+  document.querySelectorAll('.card-heart').forEach(h=>{h.addEventListener('click',function(e){e.stopPropagation();const i=this.querySelector('i');i.style.color=i.style.color?'':'var(--primary)';showToast(i.style.color?'Added to wishlist ♥':'Removed from wishlist')})});
+</script>
+</body>
+</html>
