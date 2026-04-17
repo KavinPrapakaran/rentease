@@ -586,5 +586,18 @@ document.getElementById('successOverlay').addEventListener('click',function(e){
   if(e.target===this) closeSuccess();
 });
 </script>
+<script>
+// Get product name from URL
+const params = new URLSearchParams(window.location.search);
+const product = params.get("product");
+
+// Show it on page
+if(product){
+    document.title = product + " - Booking";
+
+    // Example: update heading
+    document.querySelector(".page-title").innerText = product;
+}
+</script>
 </body>
 </html>

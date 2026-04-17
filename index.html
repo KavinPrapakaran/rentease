@@ -202,10 +202,15 @@
     <span>Smart<em>Rent</em></span>
   </a>
   <ul class="nav-links">
+<a href="index.html">Home</a>
+<a href="listings.html">Listings</a>
+<a href="vendor-register.html">Become Vendor</a>
+<a href="booking.html">Booking</a>
     <li><a href="#categories">Categories</a></li>
     <li><a href="#how-it-works">How It Works</a></li>
     <li><a href="vendor-register.html">List Your Item</a></li>
     <li><a href="#app">Mobile App</a></li>
+
   </ul>
   <div class="nav-actions">
     <button class="btn-ghost" onclick="openModal('login')">Sign In</button>
@@ -513,5 +518,13 @@ function loadListings(){
 document.addEventListener("DOMContentLoaded", loadListings);
 
 </script>
+<script>
+function goBooking(name){
+    window.location.href = "booking.html?product=" + encodeURIComponent(name);
+}
+</script>
+
+</body>
+</html>
 </body>
 </html>
