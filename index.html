@@ -397,5 +397,121 @@
   function bookNow(name){openModal('login');showToast('Please sign in to book '+name)}
   document.querySelectorAll('.card-wishlist').forEach(btn=>{btn.addEventListener('click',function(e){e.stopPropagation();const icon=this.querySelector('i');if(icon.style.color==='rgb(255, 77, 0)'){icon.style.color='';showToast('Removed from wishlist')}else{icon.style.color='var(--primary)';showToast('Added to wishlist ♥')}})});
 </script>
+<script>
+// ================= STEP NAVIGATION =================
+function goStep(n){
+  document.querySelectorAll('.form-section').forEach(s=>s.classList.remove('active'));
+  document.getElementById('step'+n).classList.add('active');
+
+  for(let i=1;i<=4;i++){
+    const ps=document.getElementById('ps'+i);
+    ps.className='prog-step'+(i<n?' done':i===n?' active':'');
+  }
+
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+// ================= CATEGORY SELECT =================
+function selectCat(el){
+  document.querySelectorAll('.cat-option').forEach(c=>c.classList.remove('selected'));
+  el.classList.add('selected');
+}
+
+// ================= IMAGE PREVIEW =================
+function previewImages(input){
+  const container=document.getElementById('previewImgs');
+  container.innerHTML='';
+
+  Array.from(input.files).slice(0,6).forEach(f=>{
+    const reader=new FileReader();
+    reader.onload=e=>{
+      const img=document.createElement('img');
+      img.src=e.target.result;
+      img.className='preview-img';
+      container.appendChild(img);
+    };
+    reader.readAsDataURL(f);
+  });
+}
+
+// ================= VENDOR REGISTER =================
+function register(){
+
+  const name = document.getElementById("name").value;
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
+
+  if(!name || !email || !password){
+    alert("All fields required");
+    return;
+  }
+
+  fetch("http://localhost/smartrent/api/vendor_register.php", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({name, email, password})
+  })
+  .then(res => res.json())
+  .then(res => {
+    if(res.status === "success"){
+      alert("✅ Registered Successfully");
+      goStep(4); // move to success page
+    } else {
+      alert("❌ Registration failed");
+    }
+  })
+  .catch(err => {
+    console.error(err);
+    alert("Server error");
+  });
+}
+
+// ================= LOAD LISTINGS =================
+function loadListings(){
+
+  fetch("http://localhost/smartrent/api/get_listings.php")
+  .then(res => res.json())
+  .then(data => {
+
+    let container = document.querySelector(".cards-grid");
+
+    if(!container) return;
+
+    container.innerHTML = "";
+
+    data.forEach(item => {
+      container.innerHTML += `
+      <div class="rental-card">
+          <div class="card-img">
+              <img src="uploads/${item.id}.jpg">
+              <span class="card-badge">${item.category}</span>
+          </div>
+
+          <div class="card-body">
+              <h4>${item.title}</h4>
+              <div class="card-location">
+                  <i class="fas fa-map-marker-alt"></i> ${item.city}
+              </div>
+
+              <div class="card-footer">
+                  <div class="card-price">
+                      <strong>₹${item.price_per_day}</strong>
+                      <span>/day</span>
+                  </div>
+
+                  <button class="btn-book">Book</button>
+              </div>
+          </div>
+      </div>`;
+    });
+
+  })
+  .catch(err => console.error("Fetch error:", err));
+}
+
+// AUTO LOAD
+document.addEventListener("DOMContentLoaded", loadListings);
+
+</script>
 </body>
 </html>
