@@ -1,6 +1,8 @@
 <?php
-require_once "../config.php";
+// Connect to the config hub using a relative path
+require_once dirname(__DIR__) . '/php/config.php';
 
+// Now $pdo is available from config.php
 $stmt = $pdo->query("
     SELECT l.id, l.title, l.price_per_day, l.city, c.name as category
     FROM listings l
@@ -9,5 +11,6 @@ $stmt = $pdo->query("
     ORDER BY l.id DESC
 ");
 
-echo json_encode($stmt->fetchAll());
+header('Content-Type: application/json');
+echo json_encode($stmt->fetchAll(PDO::FETCH_ASSOC));
 ?>
