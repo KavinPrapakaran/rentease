@@ -29,13 +29,16 @@
     .filter-group{margin-bottom:14px}
     .filter-group label{display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--text);cursor:pointer;padding:6px 0}
     .filter-group input[type=checkbox]{accent-color:var(--primary);width:16px;height:16px}
-    .price-range{display:flex;gap:8px;align-items:center}
-    .price-range input{flex:1;border:1.5px solid var(--bg2);border-radius:8px;padding:9px 11px;font-size:.85rem;font-family:'DM Sans',sans-serif;outline:none}
+    .price-range{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+    .price-range input{flex:1 1 110px;min-width:0;border:1.5px solid var(--bg2);border-radius:8px;padding:9px 11px;font-size:.85rem;font-family:'DM Sans',sans-serif;outline:none}
     .price-range input:focus{border-color:var(--primary)}
     .price-range span{color:var(--text-light);font-size:.85rem}
     .btn-apply{width:100%;background:var(--primary);color:#fff;border:none;padding:11px;border-radius:9px;font-size:.9rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;margin-top:8px}
-    .results-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:22px}
+    .results-header{display:flex;align-items:end;justify-content:space-between;gap:16px;margin-bottom:22px;flex-wrap:wrap}
     .results-header p{font-size:.9rem;color:var(--text-light)}
+    .listing-tools{display:flex;gap:10px;flex-wrap:wrap;align-items:center;justify-content:flex-end}
+    .search-input{min-width:260px;border:1.5px solid var(--bg2);border-radius:10px;padding:10px 14px;font-size:.9rem;font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);outline:none}
+    .search-input:focus{border-color:var(--primary)}
     .sort-select{border:1.5px solid var(--bg2);border-radius:8px;padding:9px 14px;font-size:.85rem;font-family:'DM Sans',sans-serif;background:var(--white);color:var(--text);outline:none;cursor:pointer}
     .sort-select:focus{border-color:var(--primary)}
     .cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px}
@@ -61,23 +64,18 @@
     .card-price span{font-size:.76rem;color:var(--text-light)}
     .btn-bk{background:var(--secondary);color:#fff;border:none;padding:8px 16px;border-radius:8px;font-size:.82rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
     .btn-bk:hover{background:var(--primary)}
+    .empty-state{grid-column:1/-1;background:var(--white);border-radius:var(--radius);padding:32px;text-align:center;box-shadow:0 2px 16px rgba(0,0,0,.06);color:var(--text-light)}
+    .empty-state i{font-size:2rem;color:var(--primary);margin-bottom:10px;display:block}
     .toast{position:fixed;bottom:24px;right:24px;background:var(--secondary);color:#fff;padding:13px 20px;border-radius:12px;font-size:.88rem;display:flex;align-items:center;gap:8px;z-index:300;transform:translateY(60px);opacity:0;transition:all .3s;box-shadow:0 8px 28px rgba(0,0,0,.2)}
     .toast.show{transform:translateY(0);opacity:1}
     .toast i{color:var(--primary)}
-    @media(max-width:900px){.listings-page{grid-template-columns:1fr}.sidebar-filters{position:static}}
+    @media(max-width:900px){.listings-page{grid-template-columns:1fr}.sidebar-filters{position:static}.search-input{min-width:0;flex:1}.price-range input{flex-basis:calc(50% - 4px)}}
   </style>
 </head>
 <body>
-<nav>
-  <a href="index.html" class="logo"><div class="logo-icon"><i class="fas fa-bolt"></i></div><span>Rent<em>Ease</em></span></a>
-  <div class="nav-right">
-    <a href="index.html" class="btn-ghost">Home</a>
-    <button class="btn-primary" onclick="showToast('Please sign in to continue')">Sign In</button>
-  </div>
-</nav>
 <div class="page-header">
   <h1>Browse All Rentals</h1>
-  <p>Explore 5,200+ verified listings across bikes, cars, laptops and cameras.</p>
+  <p>Explore 40 verified listings across bikes, cars, laptops and cameras.</p>
 </div>
 <div class="listings-page">
   <!-- FILTERS -->
@@ -86,10 +84,10 @@
       <h4><i class="fas fa-sliders-h" style="color:var(--primary);margin-right:7px"></i>Filters</h4>
       <div style="margin-bottom:16px">
         <div style="font-size:.8rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Category</div>
-        <div class="filter-group"><label><input type="checkbox" checked/> <i class="fas fa-motorcycle" style="color:#FF6B35"></i> Bikes (1,240)</label></div>
-        <div class="filter-group"><label><input type="checkbox" checked/> <i class="fas fa-car" style="color:#2196F3"></i> Cars (980)</label></div>
-        <div class="filter-group"><label><input type="checkbox" checked/> <i class="fas fa-laptop" style="color:#2E7D32"></i> Laptops (760)</label></div>
-        <div class="filter-group"><label><input type="checkbox" checked/> <i class="fas fa-camera" style="color:#F57C00"></i> Cameras (620)</label></div>
+        <div class="filter-group"><label><input type="checkbox" checked value="bike" class="category-filter"/> <i class="fas fa-motorcycle" style="color:#FF6B35"></i> Bikes (10)</label></div>
+        <div class="filter-group"><label><input type="checkbox" checked value="car" class="category-filter"/> <i class="fas fa-car" style="color:#2196F3"></i> Cars (10)</label></div>
+        <div class="filter-group"><label><input type="checkbox" checked value="laptop" class="category-filter"/> <i class="fas fa-laptop" style="color:#2E7D32"></i> Laptops (10)</label></div>
+        <div class="filter-group"><label><input type="checkbox" checked value="camera" class="category-filter"/> <i class="fas fa-camera" style="color:#F57C00"></i> Cameras (10)</label></div>
       </div>
       <div style="margin-bottom:16px">
         <div style="font-size:.8rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.8px;margin-bottom:10px">Price / Day</div>
@@ -111,24 +109,187 @@
   <!-- RESULTS -->
   <div>
     <div class="results-header">
-      <p>Showing <strong>5,200+</strong> results near Chennai</p>
-      <select class="sort-select"><option>Sort: Relevance</option><option>Price: Low to High</option><option>Price: High to Low</option><option>Best Rated</option><option>Newest First</option></select>
+      <p id="resultsSummary">Showing <strong>40</strong> results</p>
+      <div class="listing-tools">
+        <input id="searchInput" class="search-input" type="search" placeholder="Search by item, city, or category…"/>
+        <select id="sortSelect" class="sort-select"><option value="relevance">Sort: Relevance</option><option value="price-asc">Price: Low to High</option><option value="price-desc">Price: High to Low</option><option value="rating-desc">Best Rated</option><option value="title-asc">Name: A to Z</option></select>
+      </div>
     </div>
-    <div class="cards-grid">
-      <div class="rental-card"><div class="card-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80" alt=""/><span class="card-badge">Available</span><div class="card-heart"><i class="fas fa-heart"></i></div></div><div class="card-body"><h4>Royal Enfield Classic 350</h4><div class="card-loc"><i class="fas fa-map-marker-alt"></i> Anna Nagar, Chennai</div><div class="card-rate"><span class="s">★★★★★</span><strong>4.9</strong><span>(128)</span></div><div class="card-foot"><div class="card-price"><strong>₹399</strong><span>/day</span></div><button class="btn-bk" onclick="showToast('Sign in to book!')">Book Now</button></div></div></div>
-      <div class="rental-card"><div class="card-img"><img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&q=80" alt=""/><span class="card-badge">Available</span><div class="card-heart"><i class="fas fa-heart"></i></div></div><div class="card-body"><h4>Maruti Swift Dzire 2023</h4><div class="card-loc"><i class="fas fa-map-marker-alt"></i> T. Nagar, Chennai</div><div class="card-rate"><span class="s">★★★★★</span><strong>4.8</strong><span>(94)</span></div><div class="card-foot"><div class="card-price"><strong>₹1,299</strong><span>/day</span></div><button class="btn-bk" onclick="showToast('Sign in to book!')">Book Now</button></div></div></div>
-      <div class="rental-card"><div class="card-img"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&q=80" alt=""/><span class="card-badge">Available</span><div class="card-heart"><i class="fas fa-heart"></i></div></div><div class="card-body"><h4>MacBook Pro M2 16"</h4><div class="card-loc"><i class="fas fa-map-marker-alt"></i> Velachery, Chennai</div><div class="card-rate"><span class="s">★★★★★</span><strong>4.9</strong><span>(56)</span></div><div class="card-foot"><div class="card-price"><strong>₹799</strong><span>/day</span></div><button class="btn-bk" onclick="showToast('Sign in to book!')">Book Now</button></div></div></div>
-      <div class="rental-card"><div class="card-img"><img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&q=80" alt=""/><span class="card-badge">Available</span><div class="card-heart"><i class="fas fa-heart"></i></div></div><div class="card-body"><h4>Canon EOS R5 Mirrorless</h4><div class="card-loc"><i class="fas fa-map-marker-alt"></i> Adyar, Chennai</div><div class="card-rate"><span class="s">★★★★☆</span><strong>4.7</strong><span>(83)</span></div><div class="card-foot"><div class="card-price"><strong>₹1,199</strong><span>/day</span></div><button class="btn-bk" onclick="showToast('Sign in to book!')">Book Now</button></div></div></div>
-      <div class="rental-card"><div class="card-img"><img src="https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=400&q=80" alt=""/><span class="card-badge booked">Booked</span><div class="card-heart"><i class="fas fa-heart"></i></div></div><div class="card-body"><h4>Honda Activa 6G 2023</h4><div class="card-loc"><i class="fas fa-map-marker-alt"></i> Tambaram, Chennai</div><div class="card-rate"><span class="s">★★★★★</span><strong>4.8</strong><span>(201)</span></div><div class="card-foot"><div class="card-price"><strong>₹199</strong><span>/day</span></div><button class="btn-bk" onclick="showToast('Currently booked')">Notify Me</button></div></div></div>
-      <div class="rental-card"><div class="card-img"><img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&q=80" alt=""/><span class="card-badge">Available</span><div class="card-heart"><i class="fas fa-heart"></i></div></div><div class="card-body"><h4>Dell XPS 15 RTX Gaming</h4><div class="card-loc"><i class="fas fa-map-marker-alt"></i> OMR, Chennai</div><div class="card-rate"><span class="s">★★★★★</span><strong>4.9</strong><span>(44)</span></div><div class="card-foot"><div class="card-price"><strong>₹699</strong><span>/day</span></div><button class="btn-bk" onclick="showToast('Sign in to book!')">Book Now</button></div></div></div>
-    </div>
+    <div class="cards-grid" id="cardsGrid"></div>
   </div>
 </div>
 <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
+<script src="navbar.js"></script>
 <script>
+  const catalog = [
+    {title:'Royal Enfield Classic 350', category:'bike', icon:'fa-motorcycle', price:399, rating:4.9, reviews:128, location:'Anna Nagar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80'},
+    {title:'Honda Hness CB350', category:'bike', icon:'fa-motorcycle', price:349, rating:4.8, reviews:91, location:'Adyar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1558980664-10b0f8d68f9d?w=400&q=80'},
+    {title:'Bajaj Pulsar NS200', category:'bike', icon:'fa-motorcycle', price:299, rating:4.7, reviews:74, location:'T. Nagar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1511994477422-b69e44bd4a29?w=400&q=80'},
+    {title:'TVS Apache RTR 160', category:'bike', icon:'fa-motorcycle', price:279, rating:4.6, reviews:68, location:'Velachery, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&q=80'},
+    {title:'Yamaha R15 V4', category:'bike', icon:'fa-motorcycle', price:329, rating:4.8, reviews:102, location:'Tambaram, Chennai', status:'Booked', image:'https://images.unsplash.com/photo-1558981403-c5f9899a28bc?w=400&q=80'},
+    {title:'Suzuki Access 125', category:'bike', icon:'fa-motorcycle', price:219, rating:4.5, reviews:55, location:'OMR, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?w=400&q=80'},
+    {title:'Hero Xpulse 200', category:'bike', icon:'fa-motorcycle', price:289, rating:4.7, reviews:64, location:'Anna Nagar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1502877338535-766e1452684a?w=400&q=80'},
+    {title:'KTM Duke 250', category:'bike', icon:'fa-motorcycle', price:459, rating:4.9, reviews:142, location:'Adyar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1517090504586-fde19ea6066d?w=400&q=80'},
+    {title:'Honda Dio 2024', category:'bike', icon:'fa-motorcycle', price:189, rating:4.4, reviews:41, location:'Porur, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1533473359331-0135ef1b58bf?w=400&q=80'},
+    {title:'Royal Enfield Meteor 350', category:'bike', icon:'fa-motorcycle', price:419, rating:4.9, reviews:118, location:'Anna Nagar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1485291571150-772bcfc10da5?w=400&q=80'},
+    {title:'Maruti Swift Dzire 2023', category:'car', icon:'fa-car', price:1299, rating:4.8, reviews:94, location:'T. Nagar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&q=80'},
+    {title:'Hyundai i20 N Line', category:'car', icon:'fa-car', price:1399, rating:4.7, reviews:78, location:'Velachery, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&q=80'},
+    {title:'Toyota Innova Crysta', category:'car', icon:'fa-car', price:1899, rating:4.9, reviews:132, location:'Anna Nagar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1550355291-bbee04a92027?w=400&q=80'},
+    {title:'Honda City 2024', category:'car', icon:'fa-car', price:1599, rating:4.8, reviews:102, location:'Adyar, Chennai', status:'Booked', image:'https://images.unsplash.com/photo-1549399542-7e3f8b79c341?w=400&q=80'},
+    {title:'Tata Nexon EV', category:'car', icon:'fa-car', price:1699, rating:4.7, reviews:88, location:'OMR, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&q=80'},
+    {title:'Mahindra Thar', category:'car', icon:'fa-car', price:2199, rating:4.9, reviews:167, location:'Tambaram, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1525609004556-c46c7d6cf023?w=400&q=80'},
+    {title:'Kia Seltos GTX', category:'car', icon:'fa-car', price:1799, rating:4.8, reviews:113, location:'Porur, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1550355291-bbee04a92027?w=400&q=80'},
+    {title:'Maruti Brezza', category:'car', icon:'fa-car', price:1499, rating:4.6, reviews:72, location:'Velachery, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1563720223185-11003d516935?w=400&q=80'},
+    {title:'Skoda Kushaq', category:'car', icon:'fa-car', price:1749, rating:4.7, reviews:84, location:'Anna Nagar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1503376780353-7e6692767b70?w=400&q=80'},
+    {title:'MG Hector Plus', category:'car', icon:'fa-car', price:1999, rating:4.8, reviews:96, location:'T. Nagar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1502877338535-766e1452684a?w=400&q=80'},
+    {title:'MacBook Pro M2 16"', category:'laptop', icon:'fa-laptop', price:799, rating:4.9, reviews:56, location:'Velachery, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&q=80'},
+    {title:'Dell XPS 15 RTX Gaming', category:'laptop', icon:'fa-laptop', price:699, rating:4.9, reviews:44, location:'OMR, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&q=80'},
+    {title:'Lenovo Legion 5 Pro', category:'laptop', icon:'fa-laptop', price:749, rating:4.8, reviews:63, location:'Anna Nagar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&q=80'},
+    {title:'HP Spectre x360', category:'laptop', icon:'fa-laptop', price:649, rating:4.7, reviews:52, location:'Adyar, Chennai', status:'Booked', image:'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=400&q=80'},
+    {title:'ASUS ROG Zephyrus G14', category:'laptop', icon:'fa-laptop', price:899, rating:4.9, reviews:87, location:'T. Nagar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1484788984921-03950022c9ef?w=400&q=80'},
+    {title:'Acer Aspire 7', category:'laptop', icon:'fa-laptop', price:499, rating:4.5, reviews:39, location:'Porur, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&q=80'},
+    {title:'Apple MacBook Air M3', category:'laptop', icon:'fa-laptop', price:699, rating:4.9, reviews:112, location:'Tambaram, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=400&q=80'},
+    {title:'Microsoft Surface Laptop 5', category:'laptop', icon:'fa-laptop', price:579, rating:4.7, reviews:41, location:'OMR, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1525547719571-a2d4ac8945e2?w=400&q=80'},
+    {title:'Dell Inspiron 14', category:'laptop', icon:'fa-laptop', price:459, rating:4.6, reviews:35, location:'Velachery, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&q=80'},
+    {title:'HP Pavilion 15', category:'laptop', icon:'fa-laptop', price:439, rating:4.5, reviews:29, location:'Anna Nagar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&q=80'},
+    {title:'Canon EOS R5 Mirrorless', category:'camera', icon:'fa-camera', price:1199, rating:4.7, reviews:83, location:'Adyar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&q=80'},
+    {title:'Sony A7 IV', category:'camera', icon:'fa-camera', price:1499, rating:4.9, reviews:124, location:'Anna Nagar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&q=80'},
+    {title:'Nikon Z6 II', category:'camera', icon:'fa-camera', price:1299, rating:4.8, reviews:96, location:'T. Nagar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&q=80'},
+    {title:'GoPro Hero 12 Black', category:'camera', icon:'fa-camera', price:699, rating:4.8, reviews:143, location:'Velachery, Chennai', status:'Booked', image:'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&q=80'},
+    {title:'Fujifilm X-T5', category:'camera', icon:'fa-camera', price:1099, rating:4.7, reviews:67, location:'OMR, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&q=80'},
+    {title:'Canon EOS 90D', category:'camera', icon:'fa-camera', price:899, rating:4.6, reviews:59, location:'Tambaram, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1502982720700-bfff97f2ecac?w=400&q=80'},
+    {title:'Sony FX30', category:'camera', icon:'fa-camera', price:1699, rating:4.9, reviews:72, location:'Adyar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1502189562704-87e62fa4c8a7?w=400&q=80'},
+    {title:'Panasonic Lumix S5 II', category:'camera', icon:'fa-camera', price:1399, rating:4.8, reviews:61, location:'Anna Nagar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1516035069371-29a1b244cc32?w=400&q=80'},
+    {title:'DJI Osmo Pocket 3', category:'camera', icon:'fa-camera', price:799, rating:4.7, reviews:88, location:'Porur, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&q=80'},
+    {title:'Nikon D7500', category:'camera', icon:'fa-camera', price:949, rating:4.6, reviews:47, location:'Velachery, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1502982720700-bfff97f2ecac?w=400&q=80'},
+    {title:'Canon EOS R6 Mark II', category:'camera', icon:'fa-camera', price:1599, rating:4.9, reviews:79, location:'T. Nagar, Chennai', status:'Available', image:'https://images.unsplash.com/photo-1502189562704-87e62fa4c8a7?w=400&q=80'}
+  ];
+
+  const searchInput = document.getElementById('searchInput');
+  const sortSelect = document.getElementById('sortSelect');
+  const cardsGrid = document.getElementById('cardsGrid');
+  const resultsSummary = document.getElementById('resultsSummary');
+  const categoryFilters = Array.from(document.querySelectorAll('.category-filter'));
+  const categoryCounts = catalog.reduce((counts, item) => {
+    counts[item.category] = (counts[item.category] || 0) + 1;
+    return counts;
+  }, {});
+
+  function categoryLabel(category){
+    return category === 'bike' ? 'Bikes' : category === 'car' ? 'Cars' : category === 'laptop' ? 'Laptops' : 'Cameras';
+  }
+
+  function stars(rating){
+    const full = Math.round(rating);
+    return '★★★★★'.slice(0, full).padEnd(5, '☆');
+  }
+
+  function currentFilters(){
+    const enabledCategories = categoryFilters.filter(input => input.checked).map(input => input.value);
+    const term = searchInput.value.trim().toLowerCase();
+    return {enabledCategories, term, sort: sortSelect.value};
+  }
+
+  function filteredCatalog(){
+    const filters = currentFilters();
+    const results = catalog.filter(item => {
+      const matchesCategory = filters.enabledCategories.includes(item.category);
+      const text = [item.title, item.location, categoryLabel(item.category), item.status].join(' ').toLowerCase();
+      const matchesText = !filters.term || text.includes(filters.term);
+      return matchesCategory && matchesText;
+    });
+
+    switch (filters.sort) {
+      case 'price-asc':
+        results.sort((a, b) => a.price - b.price);
+        break;
+      case 'price-desc':
+        results.sort((a, b) => b.price - a.price);
+        break;
+      case 'rating-desc':
+        results.sort((a, b) => b.rating - a.rating || a.price - b.price);
+        break;
+      case 'title-asc':
+        results.sort((a, b) => a.title.localeCompare(b.title));
+        break;
+    }
+
+    return results;
+  }
+
+  function renderCards(){
+    const items = filteredCatalog();
+    resultsSummary.innerHTML = `Showing <strong>${items.length}</strong> of <strong>${catalog.length}</strong> results`;
+
+    if (!items.length) {
+      cardsGrid.innerHTML = '<div class="empty-state"><i class="fas fa-search"></i><h3>No rentals found</h3><p>Try a different search term or re-enable a category filter.</p></div>';
+      return;
+    }
+
+    cardsGrid.innerHTML = items.map(item => `
+      <div class="rental-card" data-category="${item.category}" data-title="${item.title.toLowerCase()}">
+        <div class="card-img">
+          <img src="${item.image}" alt="${item.title}"/>
+          <span class="card-badge ${item.status === 'Booked' ? 'booked' : ''}">${item.status}</span>
+          <div class="card-heart"><i class="fas fa-heart"></i></div>
+        </div>
+        <div class="card-body">
+          <h4>${item.title}</h4>
+          <div class="card-loc"><i class="fas fa-map-marker-alt"></i> ${item.location}</div>
+          <div class="card-rate"><span class="s">${stars(item.rating)}</span><strong>${item.rating.toFixed(1)}</strong><span>(${item.reviews})</span></div>
+          <div class="card-foot">
+            <div class="card-price"><strong>₹${item.price}</strong><span>/day</span></div>
+            <button class="btn-bk" onclick="showToast('${item.status === 'Booked' ? 'Currently booked' : 'Sign in to book!'}')">${item.status === 'Booked' ? 'Notify Me' : 'Book Now'}</button>
+          </div>
+        </div>
+      </div>
+    `).join('');
+
+    document.querySelectorAll('.card-heart').forEach(heart => {
+      heart.addEventListener('click', function (event) {
+        event.stopPropagation();
+        const icon = this.querySelector('i');
+        icon.style.color = icon.style.color ? '' : 'var(--primary)';
+        showToast(icon.style.color ? 'Added to wishlist ♥' : 'Removed from wishlist');
+      });
+    });
+  }
+
+  function syncSidebarCounts(){
+    categoryFilters.forEach(input => {
+      const count = categoryCounts[input.value] || 0;
+      const label = input.closest('label');
+      if (label) {
+        const textNode = label.childNodes[label.childNodes.length - 1];
+        if (textNode && textNode.nodeType === Node.TEXT_NODE) {
+          textNode.textContent = ` ${input.value === 'bike' ? 'Bikes' : input.value === 'car' ? 'Cars' : input.value === 'laptop' ? 'Laptops' : 'Cameras'} (${count})`;
+        }
+      }
+    });
+  }
+
   let t;
-  function showToast(msg){clearTimeout(t);document.getElementById('toastMsg').textContent=msg;document.getElementById('toast').classList.add('show');t=setTimeout(()=>document.getElementById('toast').classList.remove('show'),3000)}
-  document.querySelectorAll('.card-heart').forEach(h=>{h.addEventListener('click',function(e){e.stopPropagation();const i=this.querySelector('i');i.style.color=i.style.color?'':'var(--primary)';showToast(i.style.color?'Added to wishlist ♥':'Removed from wishlist')})});
+  function showToast(msg){
+    clearTimeout(t);
+    document.getElementById('toastMsg').textContent=msg;
+    document.getElementById('toast').classList.add('show');
+    t=setTimeout(()=>document.getElementById('toast').classList.remove('show'),3000);
+  }
+
+  categoryFilters.forEach(input => input.addEventListener('change', renderCards));
+  searchInput.addEventListener('input', renderCards);
+  sortSelect.addEventListener('change', renderCards);
+
+  syncSidebarCounts();
+
+  const initialCategory = new URLSearchParams(window.location.search).get('cat');
+  if (initialCategory && categoryFilters.some(input => input.value === initialCategory)) {
+    categoryFilters.forEach(input => {
+      input.checked = input.value === initialCategory;
+    });
+  }
+
+  renderCards();
 </script>
 </body>
 </html>

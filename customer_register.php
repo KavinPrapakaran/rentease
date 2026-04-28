@@ -1,52 +1,65 @@
 <?php
+ob_start();
+ini_set('display_errors', 0);
+error_reporting(0);
+
 require_once 'config.php';
+// session_start() already called inside config.php
 
-header("Content-Type: application/json");
+ob_clean();
+header('Content-Type: application/json');
 
-$data = $_POST;
-
-$name = $data['full_name'] ?? '';
-$email = $data['email'] ?? '';
-$phone = $data['phone'] ?? '';
-$password = $data['password'] ?? '';
+$name     = trim($_POST['full_name'] ?? '');
+$email    = trim($_POST['email']     ?? '');
+$phone    = trim($_POST['phone']     ?? '');
+$password =       $_POST['password'] ?? '';
 
 if (!$name || !$email || !$password) {
-    echo json_encode(["success" => false, "message" => "Missing fields"]);
+    echo json_encode(["success" => false, "message" => "Name, email and password are required"]);
     exit;
 }
 
-try {
+if (!filter_var($email, FILTER_VALIDATE_EMAIL)) {
+    echo json_encode(["success" => false, "message" => "Invalid email address"]);
+    exit;
+}
 
-    // check existing user
-    $check = $conn->prepare("SELECT id FROM customers WHERE email = ?");
-    $check->bind_param("s", $email);
-    $check->execute();
-    $result = $check->get_result();
+if (strlen($password) < 6) {
+    echo json_encode(["success" => false, "message" => "Password must be at least 6 characters"]);
+    exit;
+}
 
-    if ($result->num_rows > 0) {
-        echo json_encode(["success" => false, "message" => "Email already exists"]);
-        exit;
-    }
+// Check if email already exists
+$stmt = $conn->prepare("SELECT id FROM customers WHERE email = ?");
+$stmt->bind_param("s", $email);
+$stmt->execute();
+$stmt->store_result();
 
-    // hash password
-    $hashed = password_hash($password, PASSWORD_DEFAULT);
+if ($stmt->num_rows > 0) {
+    echo json_encode(["success" => false, "message" => "This email is already registered"]);
+    exit;
+}
+$stmt->close();
 
-    // insert user
-    $stmt = $conn->prepare("
-        INSERT INTO customers (full_name, email, phone, password)
-        VALUES (?, ?, ?, ?)
-    ");
+// Hash password and insert
+$hashed = password_hash($password, PASSWORD_BCRYPT);
 
-    $stmt->bind_param("ssss", $name, $email, $phone, $hashed);
-    $stmt->execute();
+$stmt = $conn->prepare("INSERT INTO customers (full_name, email, phone, password) VALUES (?, ?, ?, ?)");
+$stmt->bind_param("ssss", $name, $email, $phone, $hashed);
 
-    echo json_encode(["success" => true]);
+if ($stmt->execute()) {
+    $new_id = $conn->insert_id;
 
-} catch (Exception $e) {
+    $_SESSION['user_id'] = $new_id;
+    $_SESSION['role']    = 'customer';
+    $_SESSION['name']    = $name;
+
     echo json_encode([
-        "success" => false,
-        "message" => "Server error",
-        "error" => $e->getMessage()
+        "success" => true,
+        "message" => "Account created successfully",
+        "role"    => "customer"
     ]);
+} else {
+    echo json_encode(["success" => false, "message" => "Registration failed. Please try again."]);
 }
 ?>

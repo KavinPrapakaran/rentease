@@ -1,36 +1,32 @@
 <?php
-require_once 'config.php';
+require 'config.php';
+
 header('Content-Type: application/json');
 
 $email = $_POST['email'] ?? '';
 $password = $_POST['password'] ?? '';
 
 if (!$email || !$password) {
-    sendJSON(false, 'Email & password required');
+    echo json_encode(["success"=>false,"message"=>"Fill all fields"]);
+    exit;
 }
 
-// 🔥 IMPORTANT: using customers table
 $stmt = $conn->prepare("SELECT * FROM customers WHERE email=?");
-$stmt->bind_param("s", $email);
+$stmt->bind_param("s",$email);
 $stmt->execute();
 $result = $stmt->get_result();
 
-$user = $result->fetch_assoc();
-
-if ($user) {
+if ($user = $result->fetch_assoc()) {
 
     if (password_verify($password, $user['password'])) {
-
-        $_SESSION['user_id'] = $user['id'];
-        $_SESSION['name'] = $user['full_name'];
-
-        sendJSON(true, 'Login success');
-
+        echo json_encode([
+            "success"=>true,
+            "message"=>"Login success"
+        ]);
     } else {
-        sendJSON(false, 'Wrong password');
+        echo json_encode(["success"=>false,"message"=>"Wrong password"]);
     }
 
 } else {
-    sendJSON(false, 'User not found');
+    echo json_encode(["success"=>false,"message"=>"User not found"]);
 }
-?>
