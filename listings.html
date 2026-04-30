@@ -239,7 +239,7 @@
           <div class="card-rate"><span class="s">${stars(item.rating)}</span><strong>${item.rating.toFixed(1)}</strong><span>(${item.reviews})</span></div>
           <div class="card-foot">
             <div class="card-price"><strong>₹${item.price}</strong><span>/day</span></div>
-            <button class="btn-bk" onclick="showToast('${item.status === 'Booked' ? 'Currently booked' : 'Sign in to book!'}')">${item.status === 'Booked' ? 'Notify Me' : 'Book Now'}</button>
+            <button class="btn-bk" onclick="bookNow('${item.title}', ${item.price}, ${item.deposit || 0}, '${item.location}', '${item.category}', '${item.vendor || ''}', '${item.business || ''}', '${item.image}')">${item.status === 'Booked' ? 'Notify Me' : 'Book Now'}</button>
           </div>
         </div>
       </div>
@@ -275,6 +275,30 @@
     document.getElementById('toast').classList.add('show');
     t=setTimeout(()=>document.getElementById('toast').classList.remove('show'),3000);
   }
+
+  function bookNow(title, price, deposit, location, category, vendor, business, img, listingId) {
+  const productData = {
+    title, price, deposit, location, category, vendor, business, img,
+    listing_id: listingId || 0
+  };
+
+  sessionStorage.setItem("selectedProduct", JSON.stringify(productData));
+  
+  // Build URL with all params
+  const params = new URLSearchParams({
+    title: title,
+    price: price,
+    deposit: deposit || 2000,
+    location: location,
+    category: category,
+    vendor: vendor || '',
+    business: business || '',
+    img: img || '',
+    listing_id: listingId || 0
+  });
+  
+  window.location.href = "booking.html?" + params.toString();
+}
 
   categoryFilters.forEach(input => input.addEventListener('change', renderCards));
   searchInput.addEventListener('input', renderCards);
