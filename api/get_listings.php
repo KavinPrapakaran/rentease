@@ -1,6 +1,6 @@
 <?php
 // Connect to the config hub using a relative path
-require_once dirname(__DIR__) . '/php/config.php';
+require_once dirname(__DIR__) . '/config.php';
 
 // Now $pdo is available from config.php
 $stmt = $pdo->query("
