@@ -268,27 +268,27 @@
     </div>
   </div>
   <div class="cards-grid">
-    <div class="rental-card">
+    <div class="rental-card" data-category="bike">
       <div class="card-img"><img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=400&q=80" alt="Bike"/><span class="card-badge available">Available</span><div class="card-wishlist"><i class="fas fa-heart"></i></div></div>
       <div class="card-body"><h4>Royal Enfield Classic 350</h4><div class="card-location"><i class="fas fa-map-marker-alt"></i> Anna Nagar, Chennai</div><div class="card-rating"><span class="stars">★★★★★</span> <strong>4.9</strong> <span>(128)</span></div><div class="card-footer"><div class="card-price"><strong>₹399</strong><span>/day</span></div><button class="btn-book" onclick="bookNow('Royal Enfield')">Book Now</button></div></div>
     </div>
-    <div class="rental-card">
+    <div class="rental-card" data-category="car">
       <div class="card-img"><img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?w=400&q=80" alt="Car"/><span class="card-badge available">Available</span><div class="card-wishlist"><i class="fas fa-heart"></i></div></div>
       <div class="card-body"><h4>Maruti Swift Dzire 2023</h4><div class="card-location"><i class="fas fa-map-marker-alt"></i> T. Nagar, Chennai</div><div class="card-rating"><span class="stars">★★★★★</span> <strong>4.8</strong> <span>(94)</span></div><div class="card-footer"><div class="card-price"><strong>₹1,299</strong><span>/day</span></div><button class="btn-book" onclick="bookNow('Swift Dzire')">Book Now</button></div></div>
     </div>
-    <div class="rental-card">
+    <div class="rental-card" data-category="laptop">
       <div class="card-img"><img src="https://images.unsplash.com/photo-1496181133206-80ce9b88a853?w=400&q=80" alt="Laptop"/><span class="card-badge available">Available</span><div class="card-wishlist"><i class="fas fa-heart"></i></div></div>
       <div class="card-body"><h4>MacBook Pro M2 16"</h4><div class="card-location"><i class="fas fa-map-marker-alt"></i> Velachery, Chennai</div><div class="card-rating"><span class="stars">★★★★★</span> <strong>4.9</strong> <span>(56)</span></div><div class="card-footer"><div class="card-price"><strong>₹799</strong><span>/day</span></div><button class="btn-book" onclick="bookNow('MacBook Pro')">Book Now</button></div></div>
     </div>
-    <div class="rental-card">
+    <div class="rental-card" data-category="camera">
       <div class="card-img"><img src="https://images.unsplash.com/photo-1526170375885-4d8ecf77b99f?w=400&q=80" alt="Camera"/><span class="card-badge available">Available</span><div class="card-wishlist"><i class="fas fa-heart"></i></div></div>
       <div class="card-body"><h4>Canon EOS R5 Mirrorless</h4><div class="card-location"><i class="fas fa-map-marker-alt"></i> Adyar, Chennai</div><div class="card-rating"><span class="stars">★★★★☆</span> <strong>4.7</strong> <span>(83)</span></div><div class="card-footer"><div class="card-price"><strong>₹1,199</strong><span>/day</span></div><button class="btn-book" onclick="bookNow('Canon EOS R5')">Book Now</button></div></div>
     </div>
-    <div class="rental-card">
+    <div class="rental-card" data-category="bike">
       <div class="card-img"><img src="https://images.unsplash.com/photo-1609630875171-b1321377ee65?w=400&q=80" alt="Honda"/><span class="card-badge" style="background:#f59e0b">Booked</span><div class="card-wishlist"><i class="fas fa-heart"></i></div></div>
       <div class="card-body"><h4>Honda Activa 6G 2023</h4><div class="card-location"><i class="fas fa-map-marker-alt"></i> Tambaram, Chennai</div><div class="card-rating"><span class="stars">★★★★★</span> <strong>4.8</strong> <span>(201)</span></div><div class="card-footer"><div class="card-price"><strong>₹199</strong><span>/day</span></div><button class="btn-book" onclick="bookNow('Honda Activa')">Book Now</button></div></div>
     </div>
-    <div class="rental-card">
+    <div class="rental-card" data-category="laptop">
       <div class="card-img"><img src="https://images.unsplash.com/photo-1593642632559-0c6d3fc62b89?w=400&q=80" alt="Dell"/><span class="card-badge available">Available</span><div class="card-wishlist"><i class="fas fa-heart"></i></div></div>
       <div class="card-body"><h4>Dell XPS 15 RTX Gaming</h4><div class="card-location"><i class="fas fa-map-marker-alt"></i> OMR, Chennai</div><div class="card-rating"><span class="stars">★★★★★</span> <strong>4.9</strong> <span>(44)</span></div><div class="card-footer"><div class="card-price"><strong>₹699</strong><span>/day</span></div><button class="btn-book" onclick="bookNow('Dell XPS')">Book Now</button></div></div>
     </div>
@@ -437,26 +437,32 @@ function handleLogin(){
 
 fetch(endpoint, {
   method: "POST",
-  headers: {
-    "Content-Type": "application/x-www-form-urlencoded"
-  },
+  headers: {"Content-Type": "application/x-www-form-urlencoded"},
+  credentials: "include",
   body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
 })
-  .then(res => res.json())
-  .then(data => {
-    if(data.success){
-      showToast(role === 'vendor' ? "Vendor login successful" : "Customer login successful");
-      closeModal();
-      if(data.redirect){
-        window.location.href = data.redirect;
+  .then(res => res.text())
+  .then(text => {
+    try {
+      const data = JSON.parse(text);
+      if(data.success){
+        showToast(role === 'vendor' ? "✅ Vendor login successful" : "✅ Welcome back!");
+        closeModal();
+        const pendingUrl = sessionStorage.getItem('pendingBookingUrl');
+        if(pendingUrl && data.role === 'customer'){
+          sessionStorage.removeItem('pendingBookingUrl');
+          window.location.href = pendingUrl;
+        } else {
+          location.reload();
+        }
       } else {
-        location.reload();
+        showToast(data.message || "Login failed");
       }
-    } else {
-      showToast(data.message);
+    } catch(e) {
+      showToast("Error: " + text.substring(0, 100));
     }
   })
-  .catch(() => showToast("Server error"));
+  .catch(() => showToast("Network error"));
 }
 
 let toastTimeout;
@@ -473,20 +479,50 @@ function showToast(msg){
 function setFilter(el){
   document.querySelectorAll('.filter-tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
-  showToast('Showing ' + el.textContent + ' listings');
+  const selected = el.textContent.trim().toLowerCase();
+  // map tab label to data-category value
+  const map = {'all':'all','bikes':'bike','cars':'car','laptops':'laptop','cameras':'camera'};
+  const cat = map[selected] || 'all';
+  document.querySelectorAll('.rental-card').forEach(card => {
+    if(cat === 'all' || card.dataset.category === cat){
+      card.style.display = '';
+    } else {
+      card.style.display = 'none';
+    }
+  });
 }
 
-function bookNow(name, price, deposit, location, category, vendor, business, img) {
-  const url = 'booking.html'
-    + '?title=' + encodeURIComponent(name || '')
-    + '&price=' + (price || 0)
-    + '&deposit=' + (deposit || 0)
+function bookNow(name, price, deposit, location, category, vendor, business, img){
+  // Build booking URL with all params
+  const bookingUrl = 'booking.html'
+    + '?title='    + encodeURIComponent(name || '')
+    + '&price='    + (price || 0)
+    + '&deposit='  + (deposit || 0)
     + '&location=' + encodeURIComponent(location || '')
     + '&category=' + encodeURIComponent(category || '')
-    + '&vendor=' + encodeURIComponent(vendor || '')
+    + '&vendor='   + encodeURIComponent(vendor || '')
     + '&business=' + encodeURIComponent(business || '')
-    + '&img=' + (img || '');
-  window.location.href = url;
+    + '&img='      + (img || '');
+
+  // Check login status first
+  fetch('auth_status.php', {credentials:'include'})
+  .then(res => res.json())
+  .then(data => {
+    if(data.logged_in && data.role === 'customer'){
+      window.location.href = bookingUrl;
+    } else if(data.logged_in && data.role === 'vendor'){
+      showToast('Vendors cannot book. Use a customer account.');
+    } else {
+      // Save booking URL, open login modal
+      sessionStorage.setItem('pendingBookingUrl', bookingUrl);
+      showToast('Please sign in to book');
+      openModal('login');
+    }
+  })
+  .catch(() => {
+    // If auth check fails, just go to booking
+    window.location.href = bookingUrl;
+  });
 }
 
 /* ✅ FIXED: DOM LOAD ISSUE */
