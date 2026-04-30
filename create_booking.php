@@ -54,8 +54,9 @@ $payment_method = clean($_POST['payment_method']  ?? 'cod');
 $special_note   = clean($_POST['special_note']    ?? '');
 
 // ── Validate ─────────────────────────────────────────────
-if (!$listing_id || !$start_date || !$end_date) {
-    sendJSON(false, 'Listing, start date and end date are required');
+// Allow demo mode when listing_id is 0 (for demo listings without DB)
+if (!$start_date || !$end_date) {
+    sendJSON(false, 'Start date and end date are required');
 }
 
 $startDT = new DateTime($start_date);
