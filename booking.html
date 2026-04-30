@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Book Now – Smart Rental Mediation</title>
+<title>Book Now – Smart Rental Marketplace</title>
 <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
 <style>
@@ -12,8 +12,6 @@
 html{scroll-behavior:smooth}
 body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text)}
 h1,h2,h3,h4{font-family:'Syne',sans-serif}
-
-/* NAV */
 nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:0 5%;height:68px;background:rgba(10,10,10,.97);backdrop-filter:blur(16px)}
 .logo{display:flex;align-items:center;gap:10px;text-decoration:none}
 .logo-icon{width:34px;height:34px;background:var(--primary);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;color:#fff}
@@ -21,15 +19,10 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .logo span em{color:var(--primary);font-style:normal}
 .nav-back{color:rgba(255,255,255,.6);text-decoration:none;font-size:.88rem;display:flex;align-items:center;gap:7px;transition:color .2s}
 .nav-back:hover{color:#fff}
-
-/* PAGE */
 .page-wrap{padding:100px 5% 60px;max-width:1100px;margin:0 auto}
 .page-title{font-size:1.8rem;font-weight:800;letter-spacing:-.5px;margin-bottom:6px}
 .page-sub{color:var(--text-light);font-size:.9rem;margin-bottom:36px}
-
 .booking-grid{display:grid;grid-template-columns:1fr 380px;gap:28px;align-items:start}
-
-/* BOOKING FORM CARD */
 .form-card{background:var(--white);border-radius:20px;padding:32px;box-shadow:0 4px 32px rgba(0,0,0,.08)}
 .form-card h3{font-size:1.15rem;font-weight:800;margin-bottom:20px;padding-bottom:14px;border-bottom:2px solid var(--bg2);display:flex;align-items:center;gap:9px}
 .form-card h3 i{color:var(--primary)}
@@ -48,10 +41,8 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .btn-confirm:disabled{background:#ccc;cursor:not-allowed;transform:none;box-shadow:none}
 .secure-note{display:flex;align-items:center;justify-content:center;gap:6px;font-size:.78rem;color:var(--text-light);margin-top:12px}
 .secure-note i{color:var(--green)}
-
-/* PRODUCT SUMMARY CARD */
 .summary-card{background:var(--white);border-radius:20px;overflow:hidden;box-shadow:0 4px 32px rgba(0,0,0,.08);position:sticky;top:88px}
-.summary-img{width:100%;height:220px;object-fit:cover;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:3rem;color:var(--text-light)}
+.summary-img{width:100%;height:220px;background:var(--bg2);display:flex;align-items:center;justify-content:center;font-size:3rem;color:var(--text-light)}
 .summary-img img{width:100%;height:100%;object-fit:cover}
 .summary-body{padding:24px}
 .summary-category{display:inline-flex;align-items:center;gap:6px;background:rgba(255,77,0,.1);color:var(--primary);font-size:.72rem;font-weight:700;letter-spacing:1px;text-transform:uppercase;padding:4px 12px;border-radius:50px;margin-bottom:10px}
@@ -70,79 +61,57 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 .price-row.total strong{font-size:1.3rem;color:var(--primary)}
 .vendor-info{display:flex;align-items:center;gap:12px;background:var(--bg);border-radius:12px;padding:14px;margin-top:16px}
 .vendor-avatar{width:40px;height:40px;border-radius:50%;background:var(--primary);display:flex;align-items:center;justify-content:center;color:#fff;font-weight:700;font-size:1rem;font-family:'Syne',sans-serif;flex-shrink:0}
-.vendor-avatar img{width:100%;height:100%;border-radius:50%;object-fit:cover}
 .vendor-details strong{display:block;font-size:.88rem;font-weight:700}
 .vendor-details span{font-size:.76rem;color:var(--text-light)}
 .verified-badge{display:inline-flex;align-items:center;gap:3px;background:rgba(34,197,94,.1);color:var(--green);font-size:.68rem;font-weight:700;padding:2px 7px;border-radius:50px;margin-top:3px}
-
-/* ── SUCCESS OVERLAY ──────────────────────────────────────── */
 .success-overlay{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:2000;display:flex;align-items:center;justify-content:center;padding:20px;opacity:0;pointer-events:none;transition:opacity .35s;backdrop-filter:blur(6px)}
 .success-overlay.show{opacity:1;pointer-events:all}
 .success-box{background:#fff;border-radius:28px;width:100%;max-width:520px;padding:48px 44px;text-align:center;transform:scale(.88) translateY(30px);transition:all .4s cubic-bezier(.34,1.56,.64,1)}
 .success-overlay.show .success-box{transform:scale(1) translateY(0)}
-
-/* animated checkmark */
 .check-circle{width:88px;height:88px;border-radius:50%;background:linear-gradient(135deg,#22c55e,#16a34a);margin:0 auto 24px;display:flex;align-items:center;justify-content:center;box-shadow:0 8px 32px rgba(34,197,94,.35);animation:popIn .5s .2s cubic-bezier(.34,1.56,.64,1) both}
 @keyframes popIn{from{transform:scale(0)}to{transform:scale(1)}}
 .check-circle svg{width:44px;height:44px}
 .check-circle svg path{stroke-dasharray:60;stroke-dashoffset:60;animation:drawCheck .5s .6s ease forwards}
 @keyframes drawCheck{to{stroke-dashoffset:0}}
-
 .success-box h2{font-size:1.8rem;font-weight:800;letter-spacing:-.5px;margin-bottom:10px;color:var(--text)}
 .success-box .sub{color:var(--text-light);font-size:.92rem;line-height:1.6;margin-bottom:28px}
-
-/* booking ID pill */
 .booking-id{display:inline-flex;align-items:center;gap:8px;background:var(--bg);border:1.5px solid var(--bg2);border-radius:12px;padding:12px 20px;margin-bottom:28px;cursor:pointer;transition:border-color .2s}
 .booking-id:hover{border-color:var(--primary)}
 .booking-id span{font-family:'Syne',sans-serif;font-size:1rem;font-weight:800;letter-spacing:1px;color:var(--text)}
 .booking-id i{color:var(--text-light);font-size:.85rem}
-
-/* details grid */
 .booking-details{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:28px;text-align:left}
 .detail-item{background:var(--bg);border-radius:12px;padding:14px 16px}
 .detail-item .dlabel{font-size:.72rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.8px;margin-bottom:4px}
 .detail-item .dvalue{font-size:.92rem;font-weight:700;color:var(--text)}
 .detail-item.full{grid-column:1/-1}
-
-/* status steps */
 .booking-steps{display:flex;align-items:center;justify-content:center;gap:0;margin-bottom:28px}
 .bstep{display:flex;flex-direction:column;align-items:center;gap:5px;flex:1}
-.bstep-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700;transition:all .3s}
+.bstep-dot{width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.8rem;font-weight:700}
 .bstep-dot.done{background:var(--green);color:#fff}
 .bstep-dot.active{background:var(--primary);color:#fff;box-shadow:0 0 0 4px rgba(255,77,0,.2)}
 .bstep-dot.pending{background:var(--bg2);color:var(--text-light)}
 .bstep-label{font-size:.68rem;color:var(--text-light);font-weight:600;text-align:center}
-.bstep-line{flex:1;height:2px;background:var(--bg2);margin:0;margin-bottom:18px;align-self:flex-start;margin-top:16px}
+.bstep-line{flex:1;height:2px;background:var(--bg2);margin-bottom:18px;align-self:flex-start;margin-top:16px}
 .bstep-line.done{background:var(--green)}
-
 .success-actions{display:flex;gap:12px;flex-wrap:wrap;justify-content:center}
 .btn-home{background:var(--secondary);color:#fff;border:none;padding:13px 28px;border-radius:12px;font-size:.9rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s;text-decoration:none;display:inline-flex;align-items:center;gap:7px}
 .btn-home:hover{background:var(--primary)}
 .btn-outline{background:transparent;color:var(--text);border:1.5px solid var(--bg2);padding:12px 24px;border-radius:12px;font-size:.9rem;font-weight:600;cursor:pointer;font-family:'DM Sans',sans-serif;transition:all .2s}
 .btn-outline:hover{border-color:var(--primary);color:var(--primary)}
-
-/* confetti */
 .confetti-wrap{position:fixed;inset:0;pointer-events:none;z-index:2001;overflow:hidden}
 .confetti-piece{position:absolute;width:10px;height:10px;top:-10px;opacity:0;animation:confettiFall linear forwards}
 @keyframes confettiFall{0%{opacity:1;transform:translateY(0) rotate(0deg)}100%{opacity:0;transform:translateY(110vh) rotate(720deg)}}
-
-/* LOADING SPINNER */
 .spinner{width:22px;height:22px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 .btn-confirm.loading .btn-text{display:none}
 .btn-confirm.loading .spinner{display:block}
-
-/* TOAST */
 .toast{position:fixed;bottom:24px;right:24px;background:var(--secondary);color:#fff;padding:13px 20px;border-radius:12px;font-size:.88rem;display:flex;align-items:center;gap:8px;z-index:3000;transform:translateY(60px);opacity:0;transition:all .3s;box-shadow:0 8px 28px rgba(0,0,0,.2)}
 .toast.show{transform:translateY(0);opacity:1}
 .toast i{color:var(--primary)}
-
 @media(max-width:860px){.booking-grid{grid-template-columns:1fr}.summary-card{position:static}.form-row{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-
-<!-- NAV -->
 <nav>
 <a href="index.html" class="logo">
 <div class="logo-icon"><i class="fas fa-bolt"></i></div>
@@ -151,99 +120,35 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 <a href="listings.html" class="nav-back"><i class="fas fa-arrow-left"></i> Back to Listings</a>
 </nav>
 
-<!-- PAGE -->
 <div class="page-wrap">
 <h2 class="page-title">Complete Your Booking</h2>
 <p class="page-sub">Fill in your details below to confirm your rental instantly.</p>
-
 <div class="booking-grid">
-
-<!-- LEFT: FORM -->
 <div>
-<!-- Personal Details -->
 <div class="form-card" style="margin-bottom:20px">
 <h3><i class="fas fa-user"></i> Your Details</h3>
 <div class="form-row">
-<div class="form-group">
-<label>Full Name</label>
-<input type="text" id="custName" placeholder="Your full name" oninput="validateForm()"/>
+<div class="form-group"><label>Full Name</label><input type="text" id="custName" placeholder="Your full name" oninput="validateForm()"/></div>
+<div class="form-group"><label>Phone Number</label><input type="tel" id="custPhone" placeholder="+91 98765 43210" oninput="validateForm()"/></div>
 </div>
-<div class="form-group">
-<label>Phone Number</label>
-<input type="tel" id="custPhone" placeholder="+91 98765 43210" oninput="validateForm()"/>
+<div class="form-group"><label>Email Address</label><input type="email" id="custEmail" placeholder="you@example.com" oninput="validateForm()"/></div>
+<div class="form-group"><label>Full Address / Pickup Location</label><input type="text" id="custAddress" placeholder="Your address or preferred pickup point" oninput="validateForm()"/></div>
 </div>
-</div>
-<div class="form-group">
-<label>Email Address</label>
-<input type="email" id="custEmail" placeholder="you@example.com" oninput="validateForm()"/>
-</div>
-<div class="form-group">
-<label>Full Address / Pickup Location</label>
-<input type="text" id="custAddress" placeholder="Your address or preferred pickup point" oninput="validateForm()"/>
-</div>
-</div>
-
-<!-- Rental Dates -->
 <div class="form-card" style="margin-bottom:20px">
 <h3><i class="fas fa-calendar-alt"></i> Rental Duration</h3>
 <div class="form-row">
-<div class="form-group">
-<label>Start Date</label>
-<input type="date" id="startDate" onchange="calcDays()"/>
-<div class="form-note"><i class="fas fa-info-circle"></i> Must be today or future date</div>
+<div class="form-group"><label>Start Date</label><input type="date" id="startDate" onchange="calcDays()"/><div class="form-note"><i class="fas fa-info-circle"></i> Must be today or future date</div></div>
+<div class="form-group"><label>End Date</label><input type="date" id="endDate" onchange="calcDays()"/></div>
 </div>
-<div class="form-group">
-<label>End Date</label>
-<input type="date" id="endDate" onchange="calcDays()"/>
+<div class="total-days-display" id="daysDisplay" style="display:none"><span>Total Rental Duration</span><strong id="daysCount">0 Days</strong></div>
+<div class="form-group"><label>Duration Type</label><select id="durationType" onchange="calcDays()"><option value="daily">Daily</option><option value="hourly">Hourly</option><option value="weekly">Weekly</option><option value="monthly">Monthly</option></select></div>
+<div class="form-group"><label>Special Instructions (Optional)</label><textarea id="specialNote" placeholder="Any special requirements…" rows="3"></textarea></div>
 </div>
-</div>
-<div class="total-days-display" id="daysDisplay" style="display:none">
-<span>Total Rental Duration</span>
-<strong id="daysCount">0 Days</strong>
-</div>
-<div class="form-group">
-<label>Duration Type</label>
-<select id="durationType" onchange="calcDays()">
-<option value="daily">Daily</option>
-<option value="hourly">Hourly</option>
-<option value="weekly">Weekly</option>
-<option value="monthly">Monthly</option>
-</select>
-</div>
-<div class="form-group">
-<label>Special Instructions (Optional)</label>
-<textarea id="specialNote" placeholder="Any special requirements, delivery instructions, or notes to the vendor…" rows="3"></textarea>
-</div>
-</div>
-
-<!-- Payment Method -->
 <div class="form-card">
 <h3><i class="fas fa-credit-card"></i> Payment Method</h3>
-<div class="form-group">
-<label>Choose Payment</label>
-<select id="payMethod" onchange="validateForm()">
-<option value="">-- Select Payment Method --</option>
-<option value="cod">Pay at Pickup (Cash on Delivery)</option>
-<option value="upi">UPI Payment</option>
-<option value="card">Credit / Debit Card</option>
-<option value="netbanking">Net Banking</option>
-<option value="wallet">Paytm / PhonePe Wallet</option>
-</select>
-</div>
-
-<!-- UPI field -->
-<div class="form-group" id="upiField" style="display:none">
-<label>UPI ID</label>
-<input type="text" id="upiId" placeholder="yourname@upi"/>
-</div>
-
-<div id="totalDisplay" style="display:none">
-<div class="total-days-display">
-<span>Amount to Pay</span>
-<strong id="finalAmount">₹0</strong>
-</div>
-</div>
-
+<div class="form-group"><label>Choose Payment</label><select id="payMethod" onchange="validateForm()"><option value="">-- Select Payment Method --</option><option value="cod">Pay at Pickup (Cash on Delivery)</option><option value="upi">UPI Payment</option><option value="card">Credit / Debit Card</option><option value="netbanking">Net Banking</option><option value="wallet">Paytm / PhonePe Wallet</option></select></div>
+<div class="form-group" id="upiField" style="display:none"><label>UPI ID</label><input type="text" id="upiId" placeholder="yourname@upi"/></div>
+<div id="totalDisplay" style="display:none"><div class="total-days-display"><span>Amount to Pay</span><strong id="finalAmount">₹0</strong></div></div>
 <button class="btn-confirm" id="confirmBtn" onclick="confirmBooking()" disabled>
 <span class="btn-text"><i class="fas fa-check-circle"></i> Confirm Booking Instantly</span>
 <div class="spinner"></div>
@@ -252,7 +157,6 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 </div>
 </div>
 
-<!-- RIGHT: SUMMARY -->
 <div class="summary-card">
 <div class="summary-img" id="summaryImgWrap">
 <img id="summaryImg" src="" alt="Product" style="display:none"/>
@@ -262,120 +166,47 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 <div class="summary-category" id="summaryCat"><i class="fas fa-tag"></i> <span id="summaryLabel">Category</span></div>
 <h4 id="summaryTitle">Loading product…</h4>
 <div class="summary-location"><i class="fas fa-map-marker-alt"></i> <span id="summaryLoc">Location</span></div>
-<div class="summary-rating">
-<span class="stars" id="summaryStars">★★★★★</span>
-<strong id="summaryRating">4.9</strong>
-<span id="summaryReviews">(128 reviews)</span>
-</div>
+<div class="summary-rating"><span class="stars">★★★★★</span><strong id="summaryRating">4.9</strong><span id="summaryReviews">(128 reviews)</span></div>
 <div class="price-breakdown">
-<div class="price-row">
-<span>Price per day</span>
-<strong id="pricePerDay">₹0</strong>
-</div>
-<div class="price-row">
-<span>Number of days</span>
-<strong id="priceDays">1 day</strong>
-</div>
-<div class="price-row">
-<span>Security deposit</span>
-<strong id="priceDeposit">₹0</strong>
-</div>
-<div class="price-row">
-<span>Platform fee (10%)</span>
-<strong id="platformFee">₹0</strong>
-</div>
-<div class="price-row total">
-<span>Total Amount</span>
-<strong id="totalAmount">₹0</strong>
-</div>
+<div class="price-row"><span>Price per day</span><strong id="pricePerDay">₹0</strong></div>
+<div class="price-row"><span>Number of days</span><strong id="priceDays">1 day</strong></div>
+<div class="price-row"><span>Security deposit</span><strong id="priceDeposit">₹0</strong></div>
+<div class="price-row"><span>Platform fee (10%)</span><strong id="platformFee">₹0</strong></div>
+<div class="price-row total"><span>Total Amount</span><strong id="totalAmount">₹0</strong></div>
 </div>
 <div class="vendor-info">
-<div class="vendor-avatar" id="vendorAvatarWrap">
-<img id="vendorAvatar" src="" alt="" style="display:none"/>
-<span id="vendorAvatarLetter">V</span>
-</div>
-<div class="vendor-details">
-<strong id="vendorName">Vendor Name</strong>
-<span id="vendorBusiness">Business Name</span>
-<div class="verified-badge"><i class="fas fa-check-circle"></i> Verified Vendor</div>
-</div>
+<div class="vendor-avatar"><span id="vendorAvatarLetter">V</span></div>
+<div class="vendor-details"><strong id="vendorName">Vendor Name</strong><span id="vendorBusiness">Business Name</span><div class="verified-badge"><i class="fas fa-check-circle"></i> Verified Vendor</div></div>
 </div>
 </div>
 </div>
 </div>
 </div>
 
-<!-- ── SUCCESS OVERLAY ───────────────────────────────────── -->
 <div class="success-overlay" id="successOverlay">
 <div class="success-box">
-<div class="check-circle">
-<svg viewBox="0 0 52 52" fill="none" xmlns="http://www.w3.org/2000/svg">
-<path d="M14 26 L22 34 L38 18" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-</div>
+<div class="check-circle"><svg viewBox="0 0 52 52" fill="none"><path d="M14 26 L22 34 L38 18" stroke="white" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
 <h2>Booking Confirmed! 🎉</h2>
-<p class="sub">Your rental has been successfully booked and confirmed.<br/>The vendor has been notified and will contact you shortly.</p>
-
-<div class="booking-id" onclick="copyBookingId()" title="Click to copy">
-<i class="fas fa-ticket-alt" style="color:var(--primary)"></i>
-<span id="bookingIdText">SRMI-000000</span>
-<i class="fas fa-copy"></i>
-</div>
-
+<p class="sub">Your rental has been successfully booked.<br/>The vendor has been notified and will contact you shortly.</p>
+<div class="booking-id" onclick="copyBookingId()" title="Click to copy"><i class="fas fa-ticket-alt" style="color:var(--primary)"></i><span id="bookingIdText">SRMI-000000</span><i class="fas fa-copy"></i></div>
 <div class="booking-details">
-<div class="detail-item">
-<div class="dlabel">Product</div>
-<div class="dvalue" id="confProduct">—</div>
+<div class="detail-item"><div class="dlabel">Product</div><div class="dvalue" id="confProduct">—</div></div>
+<div class="detail-item"><div class="dlabel">Customer</div><div class="dvalue" id="confName">—</div></div>
+<div class="detail-item"><div class="dlabel">Start Date</div><div class="dvalue" id="confStart">—</div></div>
+<div class="detail-item"><div class="dlabel">End Date</div><div class="dvalue" id="confEnd">—</div></div>
+<div class="detail-item"><div class="dlabel">Duration</div><div class="dvalue" id="confDays">—</div></div>
+<div class="detail-item"><div class="dlabel">Payment</div><div class="dvalue" id="confPayment">—</div></div>
+<div class="detail-item full"><div class="dlabel">Total Amount Paid</div><div class="dvalue" id="confAmount" style="color:var(--primary);font-size:1.2rem">—</div></div>
 </div>
-<div class="detail-item">
-<div class="dlabel">Customer</div>
-<div class="dvalue" id="confName">—</div>
-</div>
-<div class="detail-item">
-<div class="dlabel">Start Date</div>
-<div class="dvalue" id="confStart">—</div>
-</div>
-<div class="detail-item">
-<div class="dlabel">End Date</div>
-<div class="dvalue" id="confEnd">—</div>
-</div>
-<div class="detail-item">
-<div class="dlabel">Duration</div>
-<div class="dvalue" id="confDays">—</div>
-</div>
-<div class="detail-item">
-<div class="dlabel">Payment</div>
-<div class="dvalue" id="confPayment">—</div>
-</div>
-<div class="detail-item full">
-<div class="dlabel">Total Amount Paid</div>
-<div class="dvalue" id="confAmount" style="color:var(--primary);font-size:1.2rem">—</div>
-</div>
-</div>
-
-<!-- Status Steps -->
 <div class="booking-steps">
-<div class="bstep">
-<div class="bstep-dot done"><i class="fas fa-check"></i></div>
-<div class="bstep-label">Confirmed</div>
-</div>
+<div class="bstep"><div class="bstep-dot done"><i class="fas fa-check"></i></div><div class="bstep-label">Confirmed</div></div>
 <div class="bstep-line done"></div>
-<div class="bstep">
-<div class="bstep-dot active"><i class="fas fa-store"></i></div>
-<div class="bstep-label">Vendor<br/>Notified</div>
-</div>
+<div class="bstep"><div class="bstep-dot active"><i class="fas fa-store"></i></div><div class="bstep-label">Vendor<br/>Notified</div></div>
 <div class="bstep-line"></div>
-<div class="bstep">
-<div class="bstep-dot pending"><i class="fas fa-handshake"></i></div>
-<div class="bstep-label">Pickup<br/>Ready</div>
-</div>
+<div class="bstep"><div class="bstep-dot pending"><i class="fas fa-handshake"></i></div><div class="bstep-label">Pickup<br/>Ready</div></div>
 <div class="bstep-line"></div>
-<div class="bstep">
-<div class="bstep-dot pending"><i class="fas fa-star"></i></div>
-<div class="bstep-label">Review</div>
+<div class="bstep"><div class="bstep-dot pending"><i class="fas fa-star"></i></div><div class="bstep-label">Review</div></div>
 </div>
-</div>
-
 <div class="success-actions">
 <a href="index.html" class="btn-home"><i class="fas fa-home"></i> Go to Homepage</a>
 <button class="btn-outline" onclick="printBooking()"><i class="fas fa-print"></i> Print / Save</button>
@@ -384,220 +215,173 @@ nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:ce
 </div>
 </div>
 
-<!-- CONFETTI -->
 <div class="confetti-wrap" id="confettiWrap"></div>
-
-<!-- TOAST -->
 <div class="toast" id="toast"><i class="fas fa-check-circle"></i><span id="toastMsg"></span></div>
 
 <script>
-// ── LOAD PRODUCT FROM URL PARAMS ─────────────────────────────
+// ── LOAD PRODUCT FROM URL PARAMS ONLY (no sessionStorage, works with shared links)
 const params = new URLSearchParams(window.location.search);
 const productData = {
-title: params.get('title') || 'Royal Enfield Classic 350',
-price: parseInt(params.get('price')) || 399,
-deposit: parseInt(params.get('deposit')) || 2000,
-location: params.get('location') || 'Anna Nagar, Chennai',
-rating: params.get('rating') || '4.9',
-reviews: params.get('reviews') || '128',
-category: params.get('category') || 'bike',
-img: params.get('img') || '',
-vendor: params.get('vendor') || 'Raj Kumar',
-business: params.get('business') || "Raj's Bike Rentals",
+  title:    params.get('title')    || 'Royal Enfield Classic 350',
+  price:    parseInt(params.get('price'))   || 399,
+  deposit:  parseInt(params.get('deposit')) || 2000,
+  location: params.get('location') || 'Anna Nagar, Chennai',
+  rating:   params.get('rating')   || '4.9',
+  reviews:  params.get('reviews')  || '128',
+  category: params.get('category') || 'bike',
+  img:      params.get('img')      || '',
+  vendor:   params.get('vendor')   || 'Raj Kumar',
+  business: params.get('business') || "Raj's Bike Rentals",
 };
 
-// populate summary
-document.getElementById('summaryTitle').textContent = productData.title;
-document.getElementById('summaryLoc').textContent = productData.location;
-document.getElementById('summaryRating').textContent = productData.rating;
-document.getElementById('summaryReviews').textContent = `(${productData.reviews} reviews)`;
-document.getElementById('summaryLabel').textContent = productData.category.charAt(0).toUpperCase()+productData.category.slice(1);
-document.getElementById('vendorName').textContent = productData.vendor;
-document.getElementById('vendorBusiness').textContent = productData.business;
-document.getElementById('vendorAvatarLetter').textContent = productData.vendor.charAt(0).toUpperCase();
-document.getElementById('pricePerDay').textContent = '₹'+productData.price.toLocaleString('en-IN');
-document.getElementById('priceDeposit').textContent = '₹'+productData.deposit.toLocaleString('en-IN');
+// Update page title
+document.title = productData.title + ' – Book Now';
 
-// load image
+// Populate summary
+document.getElementById('summaryTitle').textContent = productData.title;
+document.getElementById('summaryLoc').textContent   = productData.location;
+document.getElementById('summaryRating').textContent = productData.rating;
+document.getElementById('summaryReviews').textContent = '('+productData.reviews+' reviews)';
+document.getElementById('summaryLabel').textContent  = productData.category.charAt(0).toUpperCase()+productData.category.slice(1);
+document.getElementById('vendorName').textContent    = productData.vendor;
+document.getElementById('vendorBusiness').textContent= productData.business;
+document.getElementById('vendorAvatarLetter').textContent = productData.vendor.charAt(0).toUpperCase();
+document.getElementById('pricePerDay').textContent   = '₹'+productData.price.toLocaleString('en-IN');
+document.getElementById('priceDeposit').textContent  = '₹'+productData.deposit.toLocaleString('en-IN');
+
+// Load image
 if(productData.img){
-const img = document.getElementById('summaryImg');
-img.src = decodeURIComponent(productData.img);
-img.style.display='block';
-document.getElementById('summaryImgIcon').style.display='none';
-img.onerror = function(){ this.style.display='none'; document.getElementById('summaryImgIcon').style.display='block'; };
+  const img = document.getElementById('summaryImg');
+  img.src = decodeURIComponent(productData.img);
+  img.style.display = 'block';
+  document.getElementById('summaryImgIcon').style.display = 'none';
+  img.onerror = function(){ this.style.display='none'; document.getElementById('summaryImgIcon').style.display='block'; };
 }
 
-// category icon
+// Category icon
 const catIcons = {bike:'fa-motorcycle',car:'fa-car',laptop:'fa-laptop',camera:'fa-camera'};
-document.getElementById('summaryCat').querySelector('.fa-tag').className = 'fas '+(catIcons[productData.category]||'fa-tag');
+document.getElementById('summaryCat').querySelector('i').className = 'fas '+(catIcons[productData.category]||'fa-tag');
 
-// set min date
+// Set min date
 const today = new Date().toISOString().split('T')[0];
-document.getElementById('startDate').min = today;
-document.getElementById('endDate').min = today;
+document.getElementById('startDate').min   = today;
+document.getElementById('endDate').min     = today;
 document.getElementById('startDate').value = today;
 
-// ── DAYS CALCULATOR ──────────────────────────────────────────
+// Days calculator
 let totalDays = 1;
 function calcDays(){
-const s = document.getElementById('startDate').value;
-const e = document.getElementById('endDate').value;
-if(s && e && e>=s){
-const diff = Math.ceil((new Date(e)-new Date(s))/(1000*60*60*24))+1;
-totalDays = diff>0?diff:1;
-} else { totalDays=1; }
-document.getElementById('daysCount').textContent = totalDays+' Day'+(totalDays>1?'s':'');
-document.getElementById('daysDisplay').style.display='flex';
-document.getElementById('priceDays').textContent = totalDays+' day'+(totalDays>1?'s':'');
-updatePrices();
-validateForm();
+  const s = document.getElementById('startDate').value;
+  const e = document.getElementById('endDate').value;
+  if(s && e && e >= s){
+    const diff = Math.ceil((new Date(e)-new Date(s))/(1000*60*60*24))+1;
+    totalDays = diff > 0 ? diff : 1;
+  } else { totalDays = 1; }
+  document.getElementById('daysCount').textContent = totalDays+' Day'+(totalDays>1?'s':'');
+  document.getElementById('daysDisplay').style.display = 'flex';
+  document.getElementById('priceDays').textContent = totalDays+' day'+(totalDays>1?'s':'');
+  updatePrices();
+  validateForm();
 }
 
 function updatePrices(){
-const base = productData.price * totalDays;
-const fee = Math.round(base * 0.10);
-const total= base + fee + productData.deposit;
-document.getElementById('platformFee').textContent = '₹'+fee.toLocaleString('en-IN');
-document.getElementById('totalAmount').textContent = '₹'+total.toLocaleString('en-IN');
-document.getElementById('finalAmount').textContent = '₹'+total.toLocaleString('en-IN');
-document.getElementById('totalDisplay').style.display='block';
-return total;
+  const base  = productData.price * totalDays;
+  const fee   = Math.round(base * 0.10);
+  const total = base + fee + productData.deposit;
+  document.getElementById('platformFee').textContent  = '₹'+fee.toLocaleString('en-IN');
+  document.getElementById('totalAmount').textContent  = '₹'+total.toLocaleString('en-IN');
+  document.getElementById('finalAmount').textContent  = '₹'+total.toLocaleString('en-IN');
+  document.getElementById('totalDisplay').style.display = 'block';
+  return total;
 }
-
 updatePrices();
 
-// ── PAYMENT METHOD ───────────────────────────────────────────
 document.getElementById('payMethod').addEventListener('change',function(){
-document.getElementById('upiField').style.display = this.value==='upi'?'block':'none';
-validateForm();
+  document.getElementById('upiField').style.display = this.value==='upi'?'block':'none';
+  validateForm();
 });
 
-// ── FORM VALIDATION ──────────────────────────────────────────
 function validateForm(){
-const name = document.getElementById('custName').value.trim();
-const phone = document.getElementById('custPhone').value.trim();
-const email = document.getElementById('custEmail').value.trim();
-const addr = document.getElementById('custAddress').value.trim();
-const pay = document.getElementById('payMethod').value;
-const start = document.getElementById('startDate').value;
-const end = document.getElementById('endDate').value;
-const valid = name&&phone&&email&&addr&&pay&&start&&end&&end>=start;
-document.getElementById('confirmBtn').disabled = !valid;
+  const name  = document.getElementById('custName').value.trim();
+  const phone = document.getElementById('custPhone').value.trim();
+  const email = document.getElementById('custEmail').value.trim();
+  const addr  = document.getElementById('custAddress').value.trim();
+  const pay   = document.getElementById('payMethod').value;
+  const start = document.getElementById('startDate').value;
+  const end   = document.getElementById('endDate').value;
+  document.getElementById('confirmBtn').disabled = !(name&&phone&&email&&addr&&pay&&start&&end&&end>=start);
 }
 
-// ── CONFIRM BOOKING ──────────────────────────────────────────
 function confirmBooking(){
-const btn = document.getElementById('confirmBtn');
-btn.classList.add('loading');
-btn.disabled=true;
-
-// Simulate processing (1.8 seconds)
-setTimeout(()=>{
-btn.classList.remove('loading');
-showSuccess();
-}, 1800);
+  const btn = document.getElementById('confirmBtn');
+  btn.classList.add('loading');
+  btn.disabled = true;
+  setTimeout(()=>{ btn.classList.remove('loading'); showSuccess(); }, 1800);
 }
 
 function showSuccess(){
-// generate booking ID
-const bid = 'SRMI-'+Math.floor(100000+Math.random()*900000);
-document.getElementById('bookingIdText').textContent = bid;
-
-// fill confirmation details
-const payLabels={'cod':'Pay at Pickup (Cash)','upi':'UPI Payment','card':'Card Payment','netbanking':'Net Banking','wallet':'Wallet Payment'};
-const startVal = document.getElementById('startDate').value;
-const endVal = document.getElementById('endDate').value;
-document.getElementById('confProduct').textContent = productData.title;
-document.getElementById('confName').textContent = document.getElementById('custName').value;
-document.getElementById('confStart').textContent = formatDate(startVal);
-document.getElementById('confEnd').textContent = endVal?formatDate(endVal):formatDate(startVal);
-document.getElementById('confDays').textContent = totalDays+' Day'+(totalDays>1?'s':'');
-document.getElementById('confPayment').textContent = payLabels[document.getElementById('payMethod').value]||'—';
-document.getElementById('confAmount').textContent = document.getElementById('totalAmount').textContent;
-
-// show overlay
-document.getElementById('successOverlay').classList.add('show');
-document.body.style.overflow='hidden';
-
-// confetti!
-launchConfetti();
+  const bid = 'SRMI-'+Math.floor(100000+Math.random()*900000);
+  document.getElementById('bookingIdText').textContent = bid;
+  const payLabels = {'cod':'Pay at Pickup (Cash)','upi':'UPI Payment','card':'Card Payment','netbanking':'Net Banking','wallet':'Wallet Payment'};
+  const startVal = document.getElementById('startDate').value;
+  const endVal   = document.getElementById('endDate').value;
+  document.getElementById('confProduct').textContent  = productData.title;
+  document.getElementById('confName').textContent     = document.getElementById('custName').value;
+  document.getElementById('confStart').textContent    = formatDate(startVal);
+  document.getElementById('confEnd').textContent      = endVal ? formatDate(endVal) : formatDate(startVal);
+  document.getElementById('confDays').textContent     = totalDays+' Day'+(totalDays>1?'s':'');
+  document.getElementById('confPayment').textContent  = payLabels[document.getElementById('payMethod').value]||'—';
+  document.getElementById('confAmount').textContent   = document.getElementById('totalAmount').textContent;
+  document.getElementById('successOverlay').classList.add('show');
+  document.body.style.overflow = 'hidden';
+  launchConfetti();
 }
 
 function formatDate(d){
-if(!d)return '—';
-const opts={day:'numeric',month:'short',year:'numeric'};
-return new Date(d+'T00:00:00').toLocaleDateString('en-IN',opts);
+  if(!d) return '—';
+  return new Date(d+'T00:00:00').toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'});
 }
 
 function closeSuccess(){
-document.getElementById('successOverlay').classList.remove('show');
-document.body.style.overflow='';
-// reset form
-document.getElementById('custName').value='';
-document.getElementById('custPhone').value='';
-document.getElementById('custEmail').value='';
-document.getElementById('custAddress').value='';
-document.getElementById('payMethod').value='';
-document.getElementById('confirmBtn').disabled=true;
+  document.getElementById('successOverlay').classList.remove('show');
+  document.body.style.overflow = '';
+  ['custName','custPhone','custEmail','custAddress'].forEach(id=>document.getElementById(id).value='');
+  document.getElementById('payMethod').value = '';
+  document.getElementById('confirmBtn').disabled = true;
 }
 
 function copyBookingId(){
-const id = document.getElementById('bookingIdText').textContent;
-navigator.clipboard.writeText(id).then(()=>showToast('Booking ID copied: '+id));
+  const id = document.getElementById('bookingIdText').textContent;
+  navigator.clipboard.writeText(id).then(()=>showToast('Booking ID copied: '+id));
 }
 
-function printBooking(){
-window.print();
-}
+function printBooking(){ window.print(); }
 
-// ── CONFETTI ─────────────────────────────────────────────────
 function launchConfetti(){
-const wrap = document.getElementById('confettiWrap');
-wrap.innerHTML='';
-const colors=['#FF4D00','#FFD200','#22c55e','#3b82f6','#a855f7','#FF6B35','#fff'];
-for(let i=0;i<80;i++){
-const p=document.createElement('div');
-p.className='confetti-piece';
-const size=(6+Math.random()*10)+'px';
-p.style.cssText=`
-width:${size};height:${size};
-left:${Math.random()*100}%;
-background:${colors[Math.floor(Math.random()*colors.length)]};
-border-radius:${Math.random()>.5?'50%':'2px'};
-animation-duration:${1.5+Math.random()*2.5}s;
-animation-delay:${Math.random()*.8}s;
-`;
-wrap.appendChild(p);
-}
-setTimeout(()=>wrap.innerHTML='', 4000);
+  const wrap = document.getElementById('confettiWrap');
+  wrap.innerHTML = '';
+  const colors = ['#FF4D00','#FFD200','#22c55e','#3b82f6','#a855f7','#FF6B35','#fff'];
+  for(let i=0;i<80;i++){
+    const p = document.createElement('div');
+    p.className = 'confetti-piece';
+    const size = (6+Math.random()*10)+'px';
+    p.style.cssText = `width:${size};height:${size};left:${Math.random()*100}%;background:${colors[Math.floor(Math.random()*colors.length)]};border-radius:${Math.random()>.5?'50%':'2px'};animation-duration:${1.5+Math.random()*2.5}s;animation-delay:${Math.random()*.8}s;`;
+    wrap.appendChild(p);
+  }
+  setTimeout(()=>wrap.innerHTML='',4000);
 }
 
-// ── TOAST ────────────────────────────────────────────────────
 let toastT;
 function showToast(msg){
-clearTimeout(toastT);
-document.getElementById('toastMsg').textContent=msg;
-document.getElementById('toast').classList.add('show');
-toastT=setTimeout(()=>document.getElementById('toast').classList.remove('show'),3000);
+  clearTimeout(toastT);
+  document.getElementById('toastMsg').textContent = msg;
+  document.getElementById('toast').classList.add('show');
+  toastT = setTimeout(()=>document.getElementById('toast').classList.remove('show'),3000);
 }
 
-// close overlay clicking outside
 document.getElementById('successOverlay').addEventListener('click',function(e){
-if(e.target===this) closeSuccess();
+  if(e.target===this) closeSuccess();
 });
-</script>
-<script>
-// Get product name from URL
-const params = new URLSearchParams(window.location.search);
-const product = params.get("product");
-
-// Show it on page
-if(product){
-document.title = product + " - Booking";
-
-// Example: update heading
-document.querySelector(".page-title").innerText = product;
-}
 </script>
 </body>
 </html>
