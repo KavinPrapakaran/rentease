@@ -1,8 +1,8 @@
 <?php
-define('DB_HOST', '127.0.0.1');
+define('DB_HOST', 'mysql.railway.internal');
 define('DB_USER', 'root');
-define('DB_PASS', 'Kavin@2005');
-define('DB_NAME', 'rentease');
+define('DB_PASS', 'DiJeBygtnihEobKbPOEKnOgIGFRjeQcR');
+define('DB_NAME', 'railway');
 define('DB_PORT', 3306);
 
 if (session_status() === PHP_SESSION_NONE) {
