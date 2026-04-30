@@ -1,6 +1,3 @@
-CREATE DATABASE IF NOT EXISTS rentease;
-USE rentease;
-
 DROP TABLE IF EXISTS notifications;
 DROP TABLE IF EXISTS bookings;
 DROP TABLE IF EXISTS listing_images;
