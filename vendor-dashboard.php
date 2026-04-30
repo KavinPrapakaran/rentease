@@ -3,15 +3,15 @@
 //  vendor_dashboard.php  —  Full vendor dashboard with DB data
 //  Access: http://localhost/rentease/vendor-dashboard.php
 // ============================================================
-require_once 'php/config.php';
+require_once 'config.php';
 
 // ── Auth check ────────────────────────────────────────────
-if (!isset($_SESSION['vendor_id'])) {
-    header('Location: vendor-login.php');
+if (!isset($_SESSION['user_id']) || $_SESSION['role'] !== 'vendor') {
+    header('Location: vendor-login.html');
     exit();
 }
 
-$vendor_id = $_SESSION['vendor_id'];
+$vendor_id = $_SESSION['user_id'];
 
 // ── Fetch vendor info ─────────────────────────────────────
 $vstmt = $conn->prepare("SELECT * FROM vendors WHERE id = ?");
