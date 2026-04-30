@@ -316,7 +316,51 @@ function confirmBooking(){
   const btn = document.getElementById('confirmBtn');
   btn.classList.add('loading');
   btn.disabled = true;
-  setTimeout(()=>{ btn.classList.remove('loading'); showSuccess(); }, 1800);
+  
+  // Gather form data
+  const bookingData = {
+    listing_id: productData.listing_id || 0,
+    start_date: document.getElementById('startDate').value,
+    end_date: document.getElementById('endDate').value,
+    payment_method: document.getElementById('payMethod').value,
+    special_note: document.getElementById('specialNote').value,
+    cust_name: document.getElementById('custName').value,
+    cust_email: document.getElementById('custEmail').value,
+    cust_phone: document.getElementById('custPhone').value,
+    cust_address: document.getElementById('custAddress').value
+  };
+  
+  // If no listing_id (demo mode), just show success
+  if (!productData.listing_id) {
+    setTimeout(() => { 
+      btn.classList.remove('loading'); 
+      showSuccess(); 
+    }, 1800);
+    return;
+  }
+  
+  // Send booking to server
+  fetch('create_booking.php', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+    body: new URLSearchParams(bookingData).toString()
+  })
+  .then(res => res.json())
+  .then(data => {
+    btn.classList.remove('loading');
+    if (data.success) {
+      productData.booking_id = data.booking_id;
+      showSuccess();
+    } else {
+      showToast(data.message || 'Booking failed');
+      btn.disabled = false;
+    }
+  })
+  .catch(err => {
+    btn.classList.remove('loading');
+    btn.disabled = false;
+    showToast('Connection error. Please try again.');
+  });
 }
 
 function showSuccess(){
