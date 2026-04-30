@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Vendor Login – RentEase</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+<style>
+:root{--primary:#FF4D00;--primary-dark:#cc3d00;--secondary:#0A0A0A;--bg:#F5F3EF;--bg2:#EDEBE5;--white:#fff;--text:#1a1a1a;--text-light:#666;--radius:16px;--green:#22c55e}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;display:flex;align-items:center;justify-content:center}
+h1,h2,h3,h4{font-family:'Syne',sans-serif}
+.page-wrap{width:100%;max-width:440px;padding:24px}
+.login-card{background:var(--white);border-radius:24px;padding:36px 32px;box-shadow:0 8px 40px rgba(0,0,0,.08)}
+.logo{display:flex;align-items:center;justify-content:center;gap:10px;margin-bottom:8px;text-decoration:none}
+.logo-icon{width:42px;height:42px;background:var(--primary);border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;color:#fff}
+.logo span{font-family:'Syne',sans-serif;font-size:1.4rem;font-weight:800;color:var(--secondary)}
+.logo span em{color:var(--primary);font-style:normal}
+.login-title{text-align:center;font-size:1.5rem;font-weight:800;margin-bottom:6px}
+.login-sub{text-align:center;color:var(--text-light);font-size:.92rem;margin-bottom:28px}
+.form-group{margin-bottom:18px}
+.form-group label{display:block;font-size:.78rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.8px;margin-bottom:7px}
+.form-group input{width:100%;border:1.5px solid var(--bg2);border-radius:10px;padding:14px 16px;font-size:.95rem;font-family:'DM Sans',sans-serif;color:var(--text);outline:none;transition:border-color .2s}
+.form-group input:focus{border-color:var(--primary)}
+.btn-primary{width:100%;background:var(--primary);color:#fff;border:none;padding:16px;border-radius:12px;font-size:1.05rem;font-weight:700;cursor:pointer;font-family:'Syne',sans-serif;display:flex;align-items:center;justify-content:center;gap:10px;transition:all .25s;margin-top:8px}
+.btn-primary:hover{background:var(--primary-dark);transform:translateY(-2px)}
+.btn-primary:disabled{background:#ccc;cursor:not-allowed;transform:none}
+.divider{display:flex;align-items:center;gap:14px;margin:24px 0;color:var(--text-light);font-size:.82rem}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--bg2)}
+.social-login{display:flex;gap:12px}
+.social-btn{flex:1;background:var(--bg);border:1.5px solid var(--bg2);border-radius:10px;padding:12px;text-align:center;font-size:.85rem;font-weight:600;cursor:pointer;transition:all .2s;display:flex;align-items:center;justify-content:center;gap:8px}
+.social-btn:hover{border-color:var(--primary);color:var(--primary)}
+.login-footer{text-align:center;margin-top:24px;font-size:.9rem;color:var(--text-light)}
+.login-footer a{color:var(--primary);text-decoration:none;font-weight:600}
+.login-footer a:hover{text-decoration:underline}
+.error-msg{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.3);border-radius:10px;padding:12px 14px;margin-bottom:18px;color:#dc2626;font-size:.88rem;display:none;align-items:center;gap:8px}
+.error-msg.show{display:flex}
+.success-msg{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.3);border-radius:10px;padding:12px 14px;margin-bottom:18px;color:#16a34a;font-size:.88rem;display:none;align-items:center;gap:8px}
+.success-msg.show{display:flex}
+.spinner{width:20px;height:20px;border:3px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .7s linear infinite;display:none}
+@keyframes spin{to{transform:rotate(360deg)}}
+.btn-primary.loading .btn-text{display:none}
+.btn-primary.loading .spinner{display:block}
+</style>
+</head>
+<body>
+<div class="page-wrap">
+<div class="login-card">
+<a href="index.html" class="logo">
+<div class="logo-icon"><i class="fas fa-bolt"></i></div>
+<span>Rent<em>Ease</em></span>
+</a>
+<h2 class="login-title">Vendor Login</h2>
+<p class="login-sub">Sign in to manage your listings and bookings</p>
+
+<div class="error-msg" id="errorMsg"><i class="fas fa-exclamation-circle"></i><span id="errorText"></span></div>
+<div class="success-msg" id="successMsg"><i class="fas fa-check-circle"></i><span id="successText"></span></div>
+
+<form id="loginForm">
+<div class="form-group">
+<label>Email Address</label>
+<input type="email" id="email" placeholder="vendor@example.com" required/>
+</div>
+<div class="form-group">
+<label>Password</label>
+<input type="password" id="password" placeholder="Enter your password" required/>
+</div>
+<button type="submit" class="btn-primary" id="loginBtn">
+<span class="btn-text"><i class="fas fa-sign-in-alt"></i> Sign In</span>
+<span class="spinner"></span>
+</button>
+</form>
+
+<div class="divider">or</div>
+
+<div class="social-login">
+<div class="social-btn" onclick="window.location.href='vendor-register.html'">
+<i class="fas fa-user-plus"></i> Register
+</div>
+<div class="social-btn" onclick="window.location.href='login.php'">
+<i class="fas fa-user"></i> Customer Login
+</div>
+</div>
+
+<p class="login-footer">Don't have a vendor account? <a href="vendor-register.html">Register here</a></p>
+</div>
+</div>
+
+<script>
+const form = document.getElementById('loginForm');
+const errorMsg = document.getElementById('errorMsg');
+const successMsg = document.getElementById('successMsg');
+const errorText = document.getElementById('errorText');
+const successText = document.getElementById('successText');
+const loginBtn = document.getElementById('loginBtn');
+
+function showError(msg){
+  errorText.textContent = msg;
+  errorMsg.classList.add('show');
+  successMsg.classList.remove('show');
+}
+
+function showSuccess(msg){
+  successText.textContent = msg;
+  successMsg.classList.add('show');
+  errorMsg.classList.remove('show');
+}
+
+function hideMessages(){
+  errorMsg.classList.remove('show');
+  successMsg.classList.remove('show');
+}
+
+form.addEventListener('submit', async function(e){
+  e.preventDefault();
+  hideMessages();
+  
+  const email = document.getElementById('email').value.trim();
+  const password = document.getElementById('password').value;
+  
+  if(!email || !password){
+    showError('Please fill in all fields');
+    return;
+  }
+  
+  loginBtn.classList.add('loading');
+  loginBtn.disabled = true;
+  
+  try {
+    const formData = new FormData();
+    formData.append('email', email);
+    formData.append('password', password);
+    
+    const response = await fetch('vendor_login.php', {
+      method: 'POST',
+      body: formData
+    });
+    
+    const data = await response.json();
+    
+    if(data.success){
+      showSuccess('Login successful! Redirecting...');
+      // Store vendor info in sessionStorage for the dashboard
+      sessionStorage.setItem('vendor_id', data.vendor_id);
+      sessionStorage.setItem('vendor_name', data.name);
+      sessionStorage.setItem('role', 'vendor');
+      
+      // Redirect to vendor dashboard
+      setTimeout(() => {
+        window.location.href = data.redirect || 'vendor-dashboard.php';
+      }, 1000);
+    } else {
+      showError(data.message || 'Login failed');
+      loginBtn.classList.remove('loading');
+      loginBtn.disabled = false;
+    }
+  } catch(err){
+    showError('Connection error. Please try again.');
+    loginBtn.classList.remove('loading');
+    loginBtn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>
