@@ -435,39 +435,30 @@ function handleLogin(){
 
   const endpoint = role === 'vendor' ? 'vendor_login.php' : 'login.php';
 
-  fetch(endpoint, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/x-www-form-urlencoded"
-    },
-    body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
-  })
-  .then(res => res.text())   // 🔥 IMPORTANT FIX
-  .then(text => {
-    console.log("RAW RESPONSE:", text); // debug
-
-    let data;
-    try {
-      data = JSON.parse(text);
-    } catch (e) {
-      console.error("JSON ERROR:", text);
-      showToast("Server response error");
-      return;
-    }
-
+fetch(endpoint, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  body: `email=${encodeURIComponent(email)}&password=${encodeURIComponent(password)}`
+})
+  .then(res => res.json())
+  .then(data => {
     if(data.success){
       showToast(role === 'vendor' ? "Vendor login successful" : "Customer login successful");
       closeModal();
-      location.reload();
+      if(data.redirect){
+        window.location.href = data.redirect;
+      } else {
+        location.reload();
+      }
     } else {
       showToast(data.message);
     }
   })
-  .catch(err => {
-    console.error(err);
-    showToast("Server error");
-  });
+  .catch(() => showToast("Server error"));
 }
+
 let toastTimeout;
 function showToast(msg){
   clearTimeout(toastTimeout);
@@ -485,30 +476,18 @@ function setFilter(el){
   showToast('Showing ' + el.textContent + ' listings');
 }
 
-function bookNow(){
-
-  fetch("auth_status.php", {
-    credentials: "same-origin"   // 🔥 VERY IMPORTANT
-  })
-  .then(res => res.json())
-  .then(data => {
-
-    if(data.logged_in){
-      // ✅ logged in → go booking page
-      window.location.href = "booking.html";
-    } else {
-      // ❌ not logged in → show login
-      showToast("Please login first");
-      openModal('loginModal'); // or your login popup
-    }
-
-  })
-  .catch(() => {
-    showToast("Server error");
-  });
-
+function bookNow(name, price, deposit, location, category, vendor, business, img) {
+  const url = 'booking.html'
+    + '?title=' + encodeURIComponent(name || '')
+    + '&price=' + (price || 0)
+    + '&deposit=' + (deposit || 0)
+    + '&location=' + encodeURIComponent(location || '')
+    + '&category=' + encodeURIComponent(category || '')
+    + '&vendor=' + encodeURIComponent(vendor || '')
+    + '&business=' + encodeURIComponent(business || '')
+    + '&img=' + (img || '');
+  window.location.href = url;
 }
-
 
 /* ✅ FIXED: DOM LOAD ISSUE */
 document.addEventListener("DOMContentLoaded", function () {
