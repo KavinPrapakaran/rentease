@@ -35,7 +35,9 @@ if ($vendor = $result->fetch_assoc()) {
         echo json_encode([
             "success"=>true,
             "message"=>"Vendor login success",
-            "redirect"=>"vendor-dashboard.html"
+            "vendor_id"=>$vendor['id'],
+            "name"=>$vendor['full_name'],
+            "redirect"=>"vendor-dashboard.php"
         ]);
 
     } else {
